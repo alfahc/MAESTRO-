@@ -8,137 +8,61 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-        
-        :root {
-            --midnight: #121b2d;
-            --gold: #f4b41a;
-            --whatsapp: #25D366;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; touch-action: pan-y; }
-
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--midnight);
-            height: 100dvh; width: 100vw; overflow: hidden;
-            display: flex; flex-direction: column; color: white;
-        }
-
+        :root { --midnight: #121b2d; --gold: #f4b41a; --whatsapp: #25D366; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--midnight); height: 100dvh; width: 100vw; overflow: hidden; display: flex; flex-direction: column; color: white; }
         .hero-gradient { background: radial-gradient(circle at center, #1e293b 0%, var(--midnight) 100%); }
-
-        .sticky-nav {
-            background: var(--midnight); border-bottom: 2px solid var(--gold);
-            padding: 10px 20px; flex-shrink: 0; display: flex; 
-            justify-content: space-between; align-items: center; z-index: 50;
-        }
-
+        .sticky-nav { background: var(--midnight); border-bottom: 2px solid var(--gold); padding: 10px 20px; flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; z-index: 50; }
         .view-section { display: none; flex: 1; height: 100%; overflow: hidden; }
         .view-active { display: flex; flex-direction: column; }
-
-        .static-container {
-            flex: 1; display: flex; flex-direction: column;
-            background: #f8fafc; padding: 8px 12px; overflow-y: auto;
-        }
-
-        .product-card {
-            background: white; display: flex; align-items: center; justify-content: space-between;
-            padding: 10px 14px; border-radius: 12px; border: 1px solid #e2e8f0;
-            margin-bottom: 6px; color: #334155;
-        }
-
-        .qty-btn {
-            background: #f1f5f9; width: 30px; height: 30px;
-            border-radius: 8px; display: flex; align-items: center; justify-content: center;
-            font-weight: bold; border: 1px solid #e2e8f0;
-        }
-
-        .catalog-footer {
-            background: var(--midnight); padding: 12px 20px;
-            padding-bottom: calc(12px + env(safe-area-inset-bottom));
-            flex-shrink: 0; border-top: 1px solid #1e293b;
-        }
-
-        .btn-whatsapp-direct {
-            background-color: var(--whatsapp); color: white;
-            padding: 14px; border-radius: 14px; font-weight: 800;
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            text-decoration: none;
-        }
-
-        .btn-location-hero {
-            background: rgba(59, 130, 246, 0.1);
-            color: #60a5fa;
-            padding: 12px 24px; border-radius: 50px; font-weight: 700;
-            display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-            font-size: 11px; text-transform: uppercase; border: 1px solid rgba(59, 130, 246, 0.3);
-            margin-bottom: 10px;
-        }
+        .static-container { flex: 1; display: flex; flex-direction: column; background: #f8fafc; padding: 8px 12px; overflow-y: auto; }
+        .product-card { background: white; display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 6px; color: #334155; }
+        .qty-btn { background: #f1f5f9; width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 1px solid #e2e8f0; }
+        .catalog-footer { background: var(--midnight); padding: 12px 20px; flex-shrink: 0; border-top: 1px solid #1e293b; }
+        .btn-whatsapp-direct { background-color: var(--whatsapp); color: white; padding: 14px; border-radius: 14px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; border: none; width: 100%; }
+        .btn-location-hero { background: rgba(59, 130, 246, 0.1); color: #60a5fa; padding: 12px 24px; border-radius: 50px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 10px; font-size: 11px; text-transform: uppercase; border: 1px solid rgba(59, 130, 246, 0.3); margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
     <nav class="sticky-nav">
         <div class="flex flex-col">
-            <h1 class="text-lg font-black italic leading-none uppercase tracking-tighter text-gold">ALFA HC</h1>
-            <p class="text-[6px] uppercase tracking-[0.2em] text-slate-400 font-bold mt-1">Distribuidora • RIF: J-411261297</p>
+            <h1 class="text-lg font-black italic text-gold">ALFA HC</h1>
+            <p class="text-[6px] uppercase tracking-[0.2em] text-slate-400 font-bold mt-1">RIF: J-411261297</p>
         </div>
-        <button onclick="goBack()" id="back-btn" class="hidden text-white text-[9px] font-bold uppercase border border-slate-700 px-3 py-1.5 rounded-lg bg-slate-800">
-             Volver
-        </button>
+        <button onclick="toggleView('hero')" id="back-btn" class="hidden text-white text-[9px] font-bold uppercase border border-slate-700 px-3 py-1.5 rounded-lg bg-slate-800">Volver</button>
     </nav>
 
     <section id="view-hero" class="view-section view-active hero-gradient text-white items-center justify-between px-10 py-12 text-center">
-        <div class="mt-4">
-             <div class="inline-block border border-gold/40 bg-gold/10 rounded-full px-5 py-1.5">
-                <span class="text-[9px] font-bold tracking-widest uppercase text-gold">Catálogo Digital</span>
-            </div>
-        </div>
+        <div class="mt-4"><div class="inline-block border border-gold/40 bg-gold/10 rounded-full px-5 py-1.5"><span class="text-[9px] font-bold tracking-widest uppercase text-gold">Catálogo Oficial</span></div></div>
         <div class="w-full flex flex-col items-center">
-            <h2 class="text-xl font-extrabold mb-8 tracking-tight leading-[1.2] text-white/90">
-                Somos distribuidores de<br>cigarrillos nacionales de<br>muy alta calidad<br><span class="text-gold uppercase tracking-widest text-sm">MARCA BIGOTT</span>
-            </h2>
-
-            <button onclick="enviarUbicacion()" id="loc-btn" class="btn-location-hero">
-                <i class="fas fa-map-marker-alt"></i>
-                <span id="txt-loc">Enviar Ubicación Actual</span>
-            </button>
-            <p class="text-[8px] text-slate-400 mb-6 uppercase tracking-wider italic">* Recuerde activar su GPS primero</p>
-
-            <button onclick="toggleView('order')" class="bg-[#f4b41a] text-black px-8 py-4 rounded-2xl font-black text-sm w-full max-w-[280px] mx-auto shadow-xl active:scale-95 transition-all flex items-center justify-center gap-3">
-                VER LISTA DE PRECIOS <i class="fas fa-chevron-right"></i>
-            </button>
+            <h2 class="text-xl font-extrabold mb-8 tracking-tight leading-[1.2]">Cigarrillos Nacionales<br><span class="text-gold uppercase tracking-widest text-sm">MARCA BIGOTT</span></h2>
+            <button onclick="enviarUbicacion()" class="btn-location-hero"><i class="fas fa-map-marker-alt"></i> <span id="txt-loc">Enviar Ubicación Actual</span></button>
+            <p class="text-[8px] text-slate-400 mb-6 uppercase tracking-wider italic">* Recuerde activar su GPS</p>
+            <button onclick="toggleView('order')" class="bg-gold text-black px-8 py-4 rounded-2xl font-black text-sm w-full max-w-[280px] shadow-xl">VER PRECIOS <i class="fas fa-chevron-right ml-2"></i></button>
         </div>
-        <p class="text-slate-500 text-[8px] font-bold uppercase tracking-[0.3em]">Calidad • Puntualidad • Servicio</p>
+        <p class="text-slate-500 text-[8px] font-bold uppercase tracking-[0.3em]">Calidad • Servicio</p>
     </section>
 
     <section id="view-order" class="view-section">
-        <div class="bg-emerald-50 px-5 py-2 border-b border-emerald-100 flex justify-between items-center">
-            <h3 class="text-[9px] font-black text-emerald-800 uppercase tracking-widest">Armar Pedido</h3>
-            <span class="text-[8px] font-bold text-emerald-600 uppercase">Selecciona cantidades</span>
-        </div>
         <div class="static-container" id="order-list"></div>
         <footer class="catalog-footer">
             <div class="flex justify-between items-center mb-4 px-2">
-                <span class="text-white/60 text-[10px] font-bold uppercase tracking-widest">TOTAL A PAGAR:</span>
+                <span class="text-white/60 text-[10px] font-bold uppercase">TOTAL A PAGAR:</span>
                 <span id="grand-total" class="text-gold text-2xl font-black">$0.00</span>
             </div>
-            <button onclick="sendWhatsAppOrder()" class="btn-whatsapp-direct w-full">
-                <i class="fab fa-whatsapp text-2xl"></i>
-                <span>ENVIAR PEDIDO POR WHATSAPP</span>
+            <button onclick="sendWhatsAppOrder()" class="btn-whatsapp-direct">
+                <i class="fab fa-whatsapp text-2xl"></i> ENVIAR PEDIDO
             </button>
         </footer>
     </section>
 
     <script>
         const products = [
-            { name: 'BELMONT', price: 25.60 },
-            { name: 'BELMONT MEDIA CAJA', price: 15.40 },
-            { name: 'LUCKY NOVA', price: 30.60 },
-            { name: 'LUCKY RED ORIGINAL', price: 28.00 },
-            { name: 'PALL MALL', price: 25.60 },
-            { name: 'VICEROY', price: 16.50 },
-            { name: 'CONSUL', price: 14.00 },
-            { name: 'LUCKY COSMIC', price: 30.60 },
+            { name: 'BELMONT', price: 25.60 }, { name: 'BELMONT MEDIA CAJA', price: 15.40 },
+            { name: 'LUCKY NOVA', price: 30.60 }, { name: 'LUCKY RED ORIGINAL', price: 28.00 },
+            { name: 'PALL MALL', price: 25.60 }, { name: 'VICEROY', price: 16.50 },
+            { name: 'CONSUL', price: 14.00 }, { name: 'LUCKY COSMIC', price: 30.60 },
             { name: 'ENCENDEDOR BIC', price: 1.50 }
         ];
 
@@ -150,8 +74,6 @@
             document.getElementById('back-btn').classList.toggle('hidden', view === 'hero');
             if(view === 'order') renderOrderList();
         }
-
-        function goBack() { toggleView('hero'); }
 
         function renderOrderList() {
             const container = document.getElementById('order-list');
@@ -184,49 +106,37 @@
 
         function sendWhatsAppOrder() {
             let message = "📦 *NUEVO PEDIDO - ALFA HC*\n\n";
-            let hasItems = false;
+            let items = "";
             let total = 0;
-
             products.forEach(p => {
                 if (cart[p.name] > 0) {
-                    let sub = p.price * cart[p.name];
-                    message += `▪️ ${cart[p.name]}x ${p.name} ($${sub.toFixed(2)})\n`;
-                    total += sub;
-                    hasItems = true;
+                    items += `▪️ ${cart[p.name]}x ${p.name}\n`;
+                    total += p.price * cart[p.name];
                 }
             });
-
-            if (!hasItems) return alert("Por favor, agrega productos.");
+            if (!items) return alert("Agregue productos primero.");
+            message += items + `\n💰 *TOTAL: $${total.toFixed(2)}*`;
             
-            message += `\n💰 *TOTAL: $${total.toFixed(2)}*`;
-            
-            window.open(`https://wa.me/584124401702?text=${encodeURIComponent(message)}`, '_blank');
-
-            // --- ESTO ES LO QUE BORRA EL CARRITO ---
-            cart = {}; 
-            renderOrderList(); 
-            calculateTotal();
-            alert("Pedido enviado. El carrito se ha reiniciado.");
+            // Abrir y luego reiniciar
+            window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent(message)}`;
+            setTimeout(() => { cart = {}; renderOrderList(); }, 1000);
         }
 
         function enviarUbicacion() {
             const btnText = document.getElementById('txt-loc');
-            btnText.innerText = "ACCEDIENDO GPS...";
+            btnText.innerText = "LOCALIZANDO...";
             navigator.geolocation.getCurrentPosition(
                 (pos) => {
-                    const mapLink = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
-                    const msg = encodeURIComponent(`📍 *MI UBICACIÓN ACTUAL:* \n${mapLink}`);
-                    window.location.href = `https://wa.me/584124401702?text=${msg}`;
+                    // Enlace simplificado para evitar que se pegue
+                    const mapLink = "https://www.google.com/maps?q=" + pos.coords.latitude + "," + pos.coords.longitude;
+                    const msg = "📍 *MI UBICACIÓN ACTUAL:* \n" + mapLink;
+                    window.location.href = "https://wa.me/584124401702?text=" + encodeURIComponent(msg);
                     btnText.innerText = "Enviar Ubicación Actual";
                 },
-                () => {
-                    alert("Por favor, activa el GPS de tu móvil.");
-                    btnText.innerText = "Enviar Ubicación Actual";
-                },
-                { enableHighAccuracy: true }
+                () => { alert("Active su GPS y permita el acceso."); btnText.innerText = "Enviar Ubicación Actual"; },
+                { enableHighAccuracy: true, timeout: 5000 }
             );
         }
-
         window.onload = () => toggleView('hero');
     </script>
 </body>
