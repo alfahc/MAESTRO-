@@ -19,7 +19,7 @@
         .product-card { background: white; display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 6px; color: #334155; }
         .qty-btn { background: #f1f5f9; width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 1px solid #e2e8f0; }
         .catalog-footer { background: var(--midnight); padding: 12px 20px; flex-shrink: 0; border-top: 1px solid #1e293b; }
-        .btn-whatsapp-direct { background-color: var(--whatsapp); color: white; padding: 14px; border-radius: 14px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; border: none; width: 100%; }
+        .btn-whatsapp-direct { background-color: var(--whatsapp); color: white; padding: 14px; border-radius: 14px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; border: none; }
         .btn-location-hero { background: rgba(59, 130, 246, 0.1); color: #60a5fa; padding: 12px 24px; border-radius: 50px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 10px; font-size: 11px; text-transform: uppercase; border: 1px solid rgba(59, 130, 246, 0.3); margin-bottom: 10px; }
     </style>
 </head>
@@ -37,8 +37,12 @@
         <div class="mt-4"><div class="inline-block border border-gold/40 bg-gold/10 rounded-full px-5 py-1.5"><span class="text-[9px] font-bold tracking-widest uppercase text-gold">Catálogo Oficial</span></div></div>
         <div class="w-full flex flex-col items-center">
             <h2 class="text-xl font-extrabold mb-8 tracking-tight leading-[1.2]">Cigarrillos Nacionales<br><span class="text-gold uppercase tracking-widest text-sm">MARCA BIGOTT</span></h2>
-            <button onclick="enviarUbicacion()" class="btn-location-hero"><i class="fas fa-map-marker-alt"></i> <span id="txt-loc">Enviar Ubicación Actual</span></button>
-            <p class="text-[8px] text-slate-400 mb-6 uppercase tracking-wider italic">* Recuerde activar su GPS</p>
+            
+            <button onclick="enviarUbicacion()" class="btn-location-hero">
+                <i class="fas fa-map-marker-alt"></i> <span id="txt-loc">UBICACIÓN DE ENTREGA</span>
+            </button>
+            
+            <p class="text-[8px] text-slate-400 mb-6 uppercase tracking-wider italic">* Recuerde activar su GPS primero</p>
             <button onclick="toggleView('order')" class="bg-gold text-black px-8 py-4 rounded-2xl font-black text-sm w-full max-w-[280px] shadow-xl">VER PRECIOS <i class="fas fa-chevron-right ml-2"></i></button>
         </div>
         <p class="text-slate-500 text-[8px] font-bold uppercase tracking-[0.3em]">Calidad • Servicio</p>
@@ -117,24 +121,39 @@
             if (!items) return alert("Agregue productos primero.");
             message += items + `\n💰 *TOTAL: $${total.toFixed(2)}*`;
             
-            // Abrir y luego reiniciar
             window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent(message)}`;
-            setTimeout(() => { cart = {}; renderOrderList(); }, 1000);
+            
+            setTimeout(() => {
+                cart = {};
+                renderOrderList();
+                calculateTotal();
+            }, 1000);
         }
 
         function enviarUbicacion() {
             const btnText = document.getElementById('txt-loc');
             btnText.innerText = "LOCALIZANDO...";
+            
+            // navigator.geolocation con alta precisión para tiempo real
             navigator.geolocation.getCurrentPosition(
                 (pos) => {
-                    // Enlace simplificado para evitar que se pegue
-                    const mapLink = "https://www.google.com/maps?q=" + pos.coords.latitude + "," + pos.coords.longitude;
-                    const msg = "📍 *MI UBICACIÓN ACTUAL:* \n" + mapLink;
-                    window.location.href = "https://wa.me/584124401702?text=" + encodeURIComponent(msg);
-                    btnText.innerText = "Enviar Ubicación Actual";
+                    const lat = pos.coords.latitude;
+                    const lon = pos.coords.longitude;
+                    const mapLink = `https://www.google.com/maps?q=${lat},${lon}`;
+                    // MENSAJE CON TEXTO SOLICITADO
+                    const msg = `📍 *UBICACIÓN DE ENTREGA:* \n${mapLink}`;
+                    window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent(msg)}`;
+                    btnText.innerText = "UBICACIÓN DE ENTREGA";
                 },
-                () => { alert("Active su GPS y permita el acceso."); btnText.innerText = "Enviar Ubicación Actual"; },
-                { enableHighAccuracy: true, timeout: 5000 }
+                () => { 
+                    alert("Active su GPS y permita el acceso para enviar la ubicación exacta."); 
+                    btnText.innerText = "UBICACIÓN DE ENTREGA"; 
+                },
+                { 
+                    enableHighAccuracy: true, // FORZA GPS REAL
+                    timeout: 7000, 
+                    maximumAge: 0 
+                }
             );
         }
         window.onload = () => toggleView('hero');
