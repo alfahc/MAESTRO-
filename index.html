@@ -3,183 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Alfa HC | Catálogo Maestro Oficial</title>
+    <title>Alfa HC | Catálogo Maestro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
         :root { --midnight: #121b2d; --gold: #f4b41a; --whatsapp: #25D366; }
-        * { box-sizing: border-box; margin: 0; padding: 0; touch-action: pan-y; }
+        
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: var(--midnight);
             height: 100dvh; width: 100vw; overflow: hidden;
-            display: flex; flex-direction: column; color: white;
+            color: white; margin: 0;
         }
-        .hero-gradient { background: radial-gradient(circle at center, #1e293b 0%, var(--midnight) 100%); }
+
+        /* Pantallas */
+        .view-section {
+            position: fixed; top: 60px; left: 0; right: 0; bottom: 0;
+            display: none; flex-direction: column; background: var(--midnight);
+            z-index: 10;
+        }
+        .view-active { display: flex !important; }
+
+        .hero-gradient { 
+            background: radial-gradient(circle at center, #1e293b 0%, var(--midnight) 100%);
+            display: flex; flex-direction: column; align-items: center; justify-content: space-around;
+            padding: 40px 20px; text-align: center;
+        }
+
         .sticky-nav {
-            background: var(--midnight); border-bottom: 2px solid var(--gold);
-            padding: 10px 20px; flex-shrink: 0; display: flex; 
-            justify-content: space-between; align-items: center; z-index: 50;
+            height: 60px; background: var(--midnight); border-bottom: 2px solid var(--gold);
+            padding: 0 20px; display: flex; justify-content: space-between; align-items: center;
+            position: fixed; top: 0; width: 100%; z-index: 100;
         }
-        .view-section { display: none; flex: 1; height: 100%; overflow: hidden; }
-        .view-active { display: flex; flex-direction: column; }
+
         .static-container {
-            flex: 1; display: flex; flex-direction: column;
-            background: #f8fafc; padding: 8px 12px; overflow-y: auto;
+            flex: 1; background: #f8fafc; padding: 12px; overflow-y: auto; color: #334155;
         }
+
         .product-card {
             background: white; display: flex; align-items: center; justify-content: space-between;
-            padding: 10px 14px; border-radius: 12px; border: 1px solid #e2e8f0;
-            margin-bottom: 6px; color: #334155;
+            padding: 12px; border-radius: 12px; margin-bottom: 8px; border: 1px solid #e2e8f0;
         }
+
         .qty-btn {
-            background: #f1f5f9; width: 30px; height: 30px;
-            border-radius: 8px; display: flex; align-items: center; justify-content: center;
-            font-weight: bold; border: 1px solid #e2e8f0;
+            background: #f1f5f9; width: 35px; height: 35px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; font-weight: 800;
         }
-        .catalog-footer {
-            background: var(--midnight); padding: 12px 20px;
-            padding-bottom: calc(12px + env(safe-area-inset-bottom));
-            flex-shrink: 0; border-top: 1px solid #1e293b;
-        }
-        .btn-whatsapp-direct {
-            background-color: var(--whatsapp); color: white;
-            padding: 14px; border-radius: 14px; font-weight: 800;
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            text-decoration: none; animation: pulse 2s infinite;
-        }
+
         .btn-location-maps {
             background: linear-gradient(135deg, #4285F4 0%, #34A853 100%);
-            color: white; padding: 12px 24px; border-radius: 50px; font-weight: 800;
-            display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-            font-size: 11px; text-transform: uppercase; border: 2px solid rgba(255, 255, 255, 0.2);
-            margin-bottom: 15px; box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
+            color: white; padding: 14px 24px; border-radius: 50px; font-weight: 800;
+            display: inline-flex; align-items: center; gap: 10px; font-size: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
+
+        .catalog-footer {
+            background: var(--midnight); padding: 15px 20px env(safe-area-inset-bottom);
+            border-top: 1px solid #1e293b;
+        }
+
         .input-data {
-            width: 100%; padding: 10px; margin-top: 8px; border-radius: 10px;
-            border: 1px solid #cbd5e1; color: #1e293b; font-size: 12px; font-weight: 600;
+            width: 100%; padding: 12px; margin-top: 8px; border-radius: 10px;
+            border: 1px solid #cbd5e1; font-weight: 600;
         }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
     </style>
 </head>
 <body>
 
     <nav class="sticky-nav">
-        <div class="flex flex-col">
-            <h1 class="text-lg font-black italic leading-none uppercase tracking-tighter text-gold">ALFA HC</h1>
-            <p class="text-[6px] uppercase tracking-[0.2em] text-slate-400 font-bold mt-1">Distribuidora • RIF: J-411261297</p>
+        <div>
+            <h1 class="text-lg font-black italic text-gold leading-none">ALFA HC</h1>
+            <p class="text-[7px] uppercase tracking-widest text-slate-400">Distribuidora</p>
         </div>
-        <button onclick="goBack()" id="back-btn" class="hidden text-white text-[9px] font-bold uppercase border border-slate-700 px-3 py-1.5 rounded-lg bg-slate-800">
-             Volver
-        </button>
+        <button onclick="goHome()" id="back-btn" class="hidden bg-slate-800 text-white text-[10px] px-4 py-2 rounded-lg font-bold border border-slate-600">VOLVER</button>
     </nav>
 
-    <section id="view-hero" class="view-section view-active hero-gradient text-white items-center justify-between px-10 py-12 text-center">
-        <div class="mt-4">
-             <div class="inline-block border border-gold/40 bg-gold/10 rounded-full px-5 py-1.5">
-                <span class="text-[9px] font-bold tracking-widest uppercase text-gold">Catálogo Digital</span>
-            </div>
-        </div>
-        <div class="w-full">
-            <h2 class="text-xl font-extrabold mb-8 tracking-tight leading-[1.2] text-white/90">
-                Somos distribuidores de<br>cigarrillos nacionales de<br>muy alta calidad<br><span class="text-gold uppercase tracking-widest text-sm">MARCA BIGOTT</span>
-            </h2>
-            <button onclick="enviarUbicacion()" class="btn-location-maps" id="btn-loc">
-                <i class="fas fa-map-marker-alt"></i>
-                <span id="txt-loc">ENVIAR UBICACIÓN DE ENTREGA</span>
+    <section id="view-hero" class="view-section view-active hero-gradient">
+        <div class="border border-gold/30 bg-gold/10 px-4 py-1 rounded-full text-[10px] font-bold text-gold uppercase tracking-tighter">Catálogo Oficial 2026</div>
+        
+        <h2 class="text-2xl font-black leading-tight">Cigarrillos Nacionales<br><span class="text-gold">MARCA BIGOTT</span></h2>
+
+        <div class="flex flex-col items-center gap-4">
+            <button onclick="enviarUbicacion()" class="btn-location-maps">
+                <i class="fas fa-map-marker-alt"></i> <span id="txt-loc">ENVIAR MI UBICACIÓN</span>
             </button>
-            <p class="text-[8px] text-slate-400 mb-6 uppercase tracking-wider italic">* Active su GPS primero</p>
-            <button onclick="goToOrder()" class="bg-[#f4b41a] text-black px-8 py-4 rounded-2xl font-black text-sm w-full max-w-[280px] mx-auto shadow-xl active:scale-95 transition-all flex items-center justify-center gap-3">
-                VER LISTA DE PRECIOS <i class="fas fa-chevron-right"></i>
+            
+            <button onclick="goToOrder()" class="bg-gold text-black w-64 py-4 rounded-2xl font-black shadow-xl active:scale-95 transition-all">
+                VER LISTA DE PRECIOS <i class="fas fa-chevron-right ml-2"></i>
             </button>
         </div>
-        <p class="text-slate-500 text-[8px] font-bold uppercase tracking-[0.3em]">Calidad • Puntualidad • Servicio</p>
+        
+        <p class="text-slate-500 text-[9px] font-bold tracking-[0.4em] uppercase">Calidad y Servicio</p>
     </section>
 
     <section id="view-order" class="view-section">
-        <div class="bg-emerald-50 px-5 py-2 border-b border-emerald-100 flex justify-between items-center">
-            <h3 class="text-[9px] font-black text-emerald-800 uppercase tracking-widest">Armar Pedido</h3>
-            <span class="text-[8px] font-bold text-emerald-600 uppercase">Selecciona cantidades</span>
-        </div>
         <div class="static-container">
             <div id="order-list"></div>
-            <div class="mt-4 p-4 bg-white rounded-xl border border-gold/30 shadow-sm mb-6">
-                <h4 class="text-[10px] font-black text-slate-700 uppercase mb-2">Clientes Guardados</h4>
-                <select id="select-historial" onchange="autocompletarCliente()" class="input-data bg-gold/5 border-gold/20 mb-4">
-                    <option value="">-- Buscar cliente --</option>
+            
+            <div class="mt-4 p-4 bg-white rounded-xl shadow-sm border border-gold/20 mb-10">
+                <p class="text-[10px] font-bold text-slate-400 uppercase mb-2">Datos del Cliente</p>
+                <select id="select-historial" onchange="autocompletarCliente()" class="input-data bg-slate-50 mb-4 text-xs">
+                    <option value="">-- Buscar cliente guardado --</option>
                 </select>
-                <h4 class="text-[10px] font-black text-slate-700 uppercase mb-2">Datos de Entrega</h4>
-                <input id="inp-cliente" type="text" placeholder="Nombre o Negocio" class="input-data">
-                <input id="inp-rif" type="text" placeholder="RIF o Cédula" class="input-data">
-                <input id="inp-direccion" type="text" placeholder="Dirección de entrega" class="input-data">
+                <input id="inp-cliente" type="text" placeholder="Nombre del Negocio" class="input-data text-sm">
+                <input id="inp-rif" type="text" placeholder="RIF / Cédula" class="input-data text-sm">
+                <input id="inp-direccion" type="text" placeholder="Dirección de entrega" class="input-data text-sm">
             </div>
         </div>
+        
         <footer class="catalog-footer">
-            <div class="flex justify-between items-center mb-4 px-2">
-                <span class="text-white/60 text-[10px] font-bold uppercase tracking-widest">MONTO DE PEDIDO:</span>
-                <span id="grand-total" class="text-gold text-2xl font-black">$0.00</span>
+            <div class="flex justify-between items-center mb-4">
+                <span class="text-xs font-bold text-slate-400">TOTAL:</span>
+                <span id="grand-total" class="text-2xl font-black text-gold">$0.00</span>
             </div>
-            <button onclick="sendWhatsAppOrder()" class="btn-whatsapp-direct w-full">
-                <i class="fab fa-whatsapp text-2xl"></i>
-                <span>ENVIAR PEDIDO POR WHATSAPP</span>
+            <button onclick="sendWhatsAppOrder()" class="w-full bg-[#25D366] py-4 rounded-xl font-black flex items-center justify-center gap-2 shadow-lg">
+                <i class="fab fa-whatsapp text-xl"></i> ENVIAR PEDIDO
             </button>
         </footer>
     </section>
 
     <script>
         const products = [
-            { name: 'BELMONT', price: 25.60, stock: true },
-            { name: 'BELMONT MEDIA CAJA', price: 15.40, stock: true },
-            { name: 'LUCKY NOVA', price: 30.60, stock: true },
-            { name: 'LUCKY RED ORIGINAL', price: 28.00, stock: true },
-            { name: 'PALL MALL', price: 25.60, stock: true },
-            { name: 'VICEROY', price: 16.50, stock: true },
-            { name: 'CONSUL', price: 14.00, stock: true },
-            { name: 'LUCKY COSMIC', price: 30.60, stock: true },
-            { name: 'ENCENDEDOR BIC', price: 1.50, stock: true }
+            { name: 'BELMONT', price: 25.60 },
+            { name: 'BELMONT MEDIA CAJA', price: 15.40 },
+            { name: 'LUCKY NOVA', price: 30.60 },
+            { name: 'LUCKY RED ORIGINAL', price: 28.00 },
+            { name: 'PALL MALL', price: 25.60 },
+            { name: 'VICEROY', price: 16.50 },
+            { name: 'CONSUL', price: 14.00 },
+            { name: 'LUCKY COSMIC', price: 30.60 },
+            { name: 'ENCENDEDOR BIC', price: 1.50 }
         ];
 
         let cart = {};
 
-        // --- NAVEGACIÓN CORREGIDA ---
+        // --- NAVEGACIÓN REAL ---
         function goToOrder() {
             document.getElementById('view-hero').classList.remove('view-active');
             document.getElementById('view-order').classList.add('view-active');
             document.getElementById('back-btn').classList.remove('hidden');
+            window.history.pushState({page: 2}, "");
             renderOrderList();
             cargarListaClientes();
-            // Esto permite que el botón atrás del teléfono funcione
-            window.history.pushState({view: 'order'}, '');
         }
 
-        function goBack() {
+        function goHome() {
             document.getElementById('view-hero').classList.add('view-active');
             document.getElementById('view-order').classList.remove('view-active');
             document.getElementById('back-btn').classList.add('hidden');
-            if(window.history.state?.view === 'order') window.history.back();
         }
 
-        window.onpopstate = function() {
-            // Si el usuario presiona "atrás" en el teléfono
-            document.getElementById('view-hero').classList.add('view-active');
-            document.getElementById('view-order').classList.remove('view-active');
-            document.getElementById('back-btn').classList.add('hidden');
-        };
+        window.onpopstate = function() { goHome(); };
 
-        // --- LÓGICA DE PRODUCTOS ---
+        // --- FUNCIONES ---
         function renderOrderList() {
             const container = document.getElementById('order-list');
-            container.innerHTML = products.filter(p => p.stock).map(p => `
+            container.innerHTML = products.map(p => `
                 <div class="product-card">
-                    <div class="flex flex-col flex-1">
-                        <span class="text-[10px] font-black uppercase text-slate-700">${p.name}</span>
-                        <span class="text-[9px] font-bold text-slate-400">$${p.price.toFixed(2)}</span>
+                    <div>
+                        <p class="text-xs font-black text-slate-800">${p.name}</p>
+                        <p class="text-[10px] font-bold text-slate-400">$${p.price.toFixed(2)}</p>
                     </div>
-                    <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-4">
                         <button onclick="updateQty('${p.name}', -1)" class="qty-btn text-slate-400">-</button>
-                        <span class="w-6 text-center font-black text-slate-800">${cart[p.name] || 0}</span>
-                        <button onclick="updateQty('${p.name}', 1)" class="qty-btn text-slate-900 font-black">+</button>
+                        <span class="font-black text-slate-800">${cart[p.name] || 0}</span>
+                        <button onclick="updateQty('${p.name}', 1)" class="qty-btn text-gold">+</button>
                     </div>
                 </div>
             `).join('');
@@ -193,17 +182,16 @@
 
         function calculateTotal() {
             let total = 0;
-            products.forEach(p => { if (cart[p.name]) total += p.price * cart[p.name]; });
+            products.forEach(p => { if(cart[p.name]) total += p.price * cart[p.name]; });
             document.getElementById('grand-total').innerText = `$${total.toFixed(2)}`;
             return total;
         }
 
-        // --- CLIENTES ---
         function cargarListaClientes() {
             const db = JSON.parse(localStorage.getItem('alfa_clientes')) || {};
             const select = document.getElementById('select-historial');
-            select.innerHTML = '<option value="">-- Buscar cliente --</option>';
-            Object.keys(db).sort().forEach(n => {
+            select.innerHTML = '<option value="">-- Buscar cliente guardado --</option>';
+            Object.keys(db).forEach(n => {
                 const opt = document.createElement('option');
                 opt.value = n; opt.textContent = n;
                 select.appendChild(opt);
@@ -214,60 +202,50 @@
             const n = document.getElementById('select-historial').value;
             if(!n) return;
             const db = JSON.parse(localStorage.getItem('alfa_clientes')) || {};
-            const d = db[n];
             document.getElementById('inp-cliente').value = n;
-            document.getElementById('inp-rif').value = d.rif || "";
-            document.getElementById('inp-direccion').value = d.dir || "";
+            document.getElementById('inp-rif').value = db[n].rif;
+            document.getElementById('inp-direccion').value = db[n].dir;
         }
 
         function sendWhatsAppOrder() {
-            const nI = document.getElementById('inp-cliente');
-            const rI = document.getElementById('inp-rif');
-            const dI = document.getElementById('inp-direccion');
-            const n = nI.value.trim();
-            const r = rI.value.trim();
-            const d = dI.value.trim();
+            const nom = document.getElementById('inp-cliente').value;
+            const rif = document.getElementById('inp-rif').value;
+            const dir = document.getElementById('inp-direccion').value;
             let items = "";
-            let total = calculateTotal();
-            products.forEach(p => { if (cart[p.name] > 0) items += `• ${cart[p.name]}x ${p.name}\n`; });
+            products.forEach(p => { if(cart[p.name] > 0) items += `• ${cart[p.name]}x ${p.name}\n`; });
 
-            if (!items || !n) return alert("Agregue productos y nombre");
+            if(!items || !nom) return alert("Faltan datos o productos");
 
             let db = JSON.parse(localStorage.getItem('alfa_clientes')) || {};
-            db[n.toUpperCase()] = { rif: r, dir: d };
+            db[nom.toUpperCase()] = { rif, dir };
             localStorage.setItem('alfa_clientes', JSON.stringify(db));
 
-            let msg = `*ALFA HC - PEDIDO*\n\n*CLIENTE:* ${n}\n*RIF:* ${r}\n*DIR:* ${d}\n\n*PRODUCTOS:*\n${items}\n💰 *TOTAL: $${total.toFixed(2)}*`;
+            const msg = `*ALFA HC - PEDIDO*\n\n*CLIENTE:* ${nom}\n*RIF:* ${rif}\n*DIR:* ${dir}\n\n*PRODUCTOS:*\n${items}\n💰 *TOTAL: ${document.getElementById('grand-total').innerText}*`;
             window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent(msg)}`;
-
-            cart = {}; nI.value = ""; rI.value = ""; dI.value = "";
-            document.getElementById('select-historial').value = "";
+            
+            // Limpiar todo después de enviar
+            cart = {};
+            document.getElementById('inp-cliente').value = "";
+            document.getElementById('inp-rif').value = "";
+            document.getElementById('inp-direccion').value = "";
             renderOrderList();
         }
 
-        // --- UBICACIÓN CORREGIDA ---
         function enviarUbicacion() {
             const txt = document.getElementById('txt-loc');
             txt.innerText = "LOCALIZANDO...";
             navigator.geolocation.getCurrentPosition((pos) => {
                 const lat = pos.coords.latitude;
                 const lon = pos.coords.longitude;
-                // Enlace directo de Google Maps sin redirecciones raras
+                // ESTE ES EL ENLACE CORRECTO
                 const mapLink = `https://www.google.com/maps?q=${lat},${lon}`;
-                const msg = `📍 *UBICACIÓN DE ENTREGA ALFA HC:* \n${mapLink}`;
+                const msg = `📍 *UBICACIÓN DE ENTREGA:* \n${mapLink}`;
                 window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent(msg)}`;
-                setTimeout(() => { txt.innerText = "ENVIAR UBICACIÓN DE ENTREGA"; }, 2000);
-            }, (err) => { 
-                alert("Por favor active su GPS."); 
-                txt.innerText = "ENVIAR UBICACIÓN DE ENTREGA"; 
-            }, { enableHighAccuracy: true });
+                setTimeout(() => { txt.innerText = "ENVIAR MI UBICACIÓN"; }, 2000);
+            }, () => { alert("Active el GPS"); txt.innerText = "ENVIAR MI UBICACIÓN"; });
         }
 
-        window.onload = () => {
-            window.history.replaceState(null, "");
-            document.getElementById('view-hero').classList.add('view-active');
-            document.getElementById('view-order').classList.remove('view-active');
-        };
+        window.onload = () => { goHome(); };
     </script>
 </body>
 </html>
