@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Alfa HC | Catálogo Maestro</title>
+    <title>Alfa HC | Catálogo Maestro Oficial</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -20,16 +20,22 @@
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: var(--midnight);
-            height: 100dvh; width: 100vw; overflow: hidden;
-            display: flex; flex-direction: column; color: white;
+            height: 100dvh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex; flex-direction: column;
+            color: white;
         }
 
         .hero-gradient { background: radial-gradient(circle at center, #1e293b 0%, var(--midnight) 100%); }
 
         .sticky-nav {
-            background: var(--midnight); border-bottom: 2px solid var(--gold);
-            padding: 10px 20px; flex-shrink: 0; display: flex; 
-            justify-content: space-between; align-items: center; z-index: 50;
+            background: var(--midnight);
+            border-bottom: 2px solid var(--gold);
+            padding: 10px 20px;
+            flex-shrink: 0;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 50;
         }
 
         .view-section { display: none; flex: 1; height: 100%; overflow: hidden; }
@@ -37,7 +43,8 @@
 
         .static-container {
             flex: 1; display: flex; flex-direction: column;
-            background: #f8fafc; padding: 8px 12px; overflow-y: auto;
+            background: #f8fafc; padding: 8px 12px;
+            overflow-y: auto;
         }
 
         .product-card {
@@ -62,17 +69,20 @@
             background-color: var(--whatsapp); color: white;
             padding: 14px; border-radius: 14px; font-weight: 800;
             display: flex; align-items: center; justify-content: center; gap: 10px;
-            text-decoration: none; border: none; width: 100%;
+            text-decoration: none; animation: pulse 2s infinite;
         }
 
-        .btn-location-hero {
+        /* Botón azul solicitado */
+        .btn-location-blue {
             background: rgba(59, 130, 246, 0.1);
             color: #60a5fa;
             padding: 12px 24px; border-radius: 50px; font-weight: 700;
             display: inline-flex; align-items: center; justify-content: center; gap: 10px;
             font-size: 11px; text-transform: uppercase; border: 1px solid rgba(59, 130, 246, 0.3);
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
+
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
     </style>
 </head>
 <body>
@@ -80,7 +90,7 @@
     <nav class="sticky-nav">
         <div class="flex flex-col">
             <h1 class="text-lg font-black italic leading-none uppercase tracking-tighter text-gold">ALFA HC</h1>
-            <p class="text-[6px] uppercase tracking-[0.2em] text-slate-400 font-bold mt-1">RIF: J-411261297</p>
+            <p class="text-[6px] uppercase tracking-[0.2em] text-slate-400 font-bold mt-1">Distribuidora • RIF: J-411261297</p>
         </div>
         <button onclick="goBack()" id="back-btn" class="hidden text-white text-[9px] font-bold uppercase border border-slate-700 px-3 py-1.5 rounded-lg bg-slate-800">
              Volver
@@ -90,25 +100,25 @@
     <section id="view-hero" class="view-section view-active hero-gradient text-white items-center justify-between px-10 py-12 text-center">
         <div class="mt-4">
              <div class="inline-block border border-gold/40 bg-gold/10 rounded-full px-5 py-1.5">
-                <span class="text-[9px] font-bold tracking-widest uppercase text-gold">Catálogo Oficial</span>
+                <span class="text-[9px] font-bold tracking-widest uppercase text-gold">Catálogo Digital</span>
             </div>
         </div>
-        <div class="w-full flex flex-col items-center">
+        <div class="w-full">
             <h2 class="text-xl font-extrabold mb-8 tracking-tight leading-[1.2] text-white/90">
-                Distribuidora de Cigarrillos<br>Nacionales de Alta Calidad<br><span class="text-gold uppercase tracking-widest text-sm">MARCA BIGOTT</span>
+                Somos distribuidores de<br>cigarrillos nacionales de<br>muy alta calidad<br><span class="text-gold uppercase tracking-widest text-sm">MARCA BIGOTT</span>
             </h2>
 
-            <button onclick="enviarUbicacion()" id="loc-btn" class="btn-location-hero">
+            <button onclick="enviarUbicacion()" class="btn-location-blue">
                 <i class="fas fa-map-marker-alt"></i>
                 <span id="txt-loc">ENVIAR UBICACIÓN DE ENTREGA</span>
             </button>
-            <p class="text-[8px] text-slate-400 mb-6 uppercase tracking-wider italic">* Recuerde activar su GPS primero</p>
+            <p class="text-[8px] text-slate-400 mb-6 uppercase tracking-wider italic">* Active su GPS primero</p>
 
-            <button onclick="toggleView('order')" class="bg-[#f4b41a] text-black px-8 py-4 rounded-2xl font-black text-sm w-full max-w-[280px] mx-auto shadow-xl flex items-center justify-center gap-3">
+            <button onclick="toggleView('order')" class="bg-[#f4b41a] text-black px-8 py-4 rounded-2xl font-black text-sm w-full max-w-[280px] mx-auto shadow-xl active:scale-95 transition-all flex items-center justify-center gap-3">
                 VER LISTA DE PRECIOS <i class="fas fa-chevron-right"></i>
             </button>
         </div>
-        <p class="text-slate-500 text-[8px] font-bold uppercase tracking-[0.3em]">Calidad • Servicio</p>
+        <p class="text-slate-500 text-[8px] font-bold uppercase tracking-[0.3em]">Calidad • Puntualidad • Servicio</p>
     </section>
 
     <section id="view-order" class="view-section">
@@ -119,7 +129,7 @@
         <div class="static-container" id="order-list"></div>
         <footer class="catalog-footer">
             <div class="flex justify-between items-center mb-4 px-2">
-                <span class="text-white/60 text-[10px] font-bold uppercase tracking-widest">TOTAL A PAGAR:</span>
+                <span class="text-white/60 text-[10px] font-bold uppercase tracking-widest">MONTO DE PEDIDO:</span>
                 <span id="grand-total" class="text-gold text-2xl font-black">$0.00</span>
             </div>
             <button onclick="sendWhatsAppOrder()" class="btn-whatsapp-direct w-full">
@@ -131,15 +141,16 @@
 
     <script>
         const products = [
-            { name: 'BELMONT', price: 25.60 },
-            { name: 'BELMONT MEDIA CAJA', price: 15.40 },
-            { name: 'LUCKY NOVA', price: 30.60 },
-            { name: 'LUCKY RED ORIGINAL', price: 28.00 },
-            { name: 'PALL MALL', price: 25.60 },
-            { name: 'VICEROY', price: 16.50 },
-            { name: 'CONSUL', price: 14.00 },
-            { name: 'LUCKY COSMIC', price: 30.60 },
-            { name: 'ENCENDEDOR BIC', price: 1.50 }
+            { name: 'BELMONT', price: 25.60, stock: true },
+            { name: 'BELMONT MEDIA CAJA', price: 15.40, stock: true },
+            { name: 'LUCKY NOVA', price: 30.60, stock: true },
+            { name: 'LUCKY RED ORIGINAL', price: 28.00, stock: true },
+            { name: 'PALL MALL', price: 25.60, stock: true },
+            { name: 'UNIVERSAL', price: 0, stock: false },
+            { name: 'VICEROY', price: 16.50, stock: true },
+            { name: 'CONSUL', price: 14.00, stock: true },
+            { name: 'LUCKY COSMIC', price: 30.60, stock: true },
+            { name: 'ENCENDEDOR BIC', price: 1.50, stock: true }
         ];
 
         let cart = {};
@@ -155,7 +166,7 @@
 
         function renderOrderList() {
             const container = document.getElementById('order-list');
-            container.innerHTML = products.map(p => `
+            container.innerHTML = products.filter(p => p.stock).map(p => `
                 <div class="product-card">
                     <div class="flex flex-col flex-1">
                         <span class="text-[10px] font-black uppercase text-slate-700">${p.name}</span>
@@ -164,7 +175,7 @@
                     <div class="flex items-center gap-3">
                         <button onclick="updateQty('${p.name}', -1)" class="qty-btn text-slate-400">-</button>
                         <span class="w-6 text-center font-black text-slate-800">${cart[p.name] || 0}</span>
-                        <button onclick="updateQty('${p.name}', 1)" class="qty-btn text-slate-900">+</button>
+                        <button onclick="updateQty('${p.name}', 1)" class="qty-btn text-slate-900 font-black">+</button>
                     </div>
                 </div>
             `).join('');
@@ -172,57 +183,67 @@
         }
 
         function updateQty(name, change) {
-            cart[name] = Math.max(0, (cart[name] || 0) + change);
+            if (!cart[name]) cart[name] = 0;
+            cart[name] = Math.max(0, cart[name] + change);
             renderOrderList();
         }
 
         function calculateTotal() {
             let total = 0;
-            products.forEach(p => { if (cart[p.name]) total += p.price * cart[p.name]; });
+            products.forEach(p => {
+                if (cart[p.name]) total += p.price * cart[p.name];
+            });
             document.getElementById('grand-total').innerText = `$${total.toFixed(2)}`;
         }
 
         function sendWhatsAppOrder() {
-            let message = "📦 *NUEVO PEDIDO - ALFA HC*\n\n";
+            let message = "Hola mi pedido es:\n\n";
             let items = "";
             let total = 0;
+
             products.forEach(p => {
                 if (cart[p.name] > 0) {
-                    items += `▪️ ${cart[p.name]}x ${p.name}\n`;
-                    total += p.price * cart[p.name];
+                    let sub = p.price * cart[p.name];
+                    items += `• ${cart[p.name]}x ${p.name} ($${sub.toFixed(2)})\n`;
+                    total += sub;
                 }
             });
-            if (!items) return alert("Por favor, agrega productos.");
-            message += items + `\n💰 *TOTAL: $${total.toFixed(2)}*`;
+
+            if (!items) return alert("Agrega al menos un producto");
+
+            message += items + `\n💰 *MONTO DE PEDIDO: $${total.toFixed(2)}*`;
             
             window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent(message)}`;
 
-            // Reinicio de carrito
-            setTimeout(() => {
-                cart = {};
-                renderOrderList();
-                calculateTotal();
-            }, 1000);
+            // Limpieza inmediata del carrito
+            cart = {};
+            renderOrderList();
         }
 
         function enviarUbicacion() {
             const btnText = document.getElementById('txt-loc');
-            btnText.innerText = "LOCALIZANDO...";
+            btnText.innerText = "UBICANDO EN TIEMPO ACTUAL...";
             
             navigator.geolocation.getCurrentPosition(
                 (pos) => {
                     const lat = pos.coords.latitude;
                     const lon = pos.coords.longitude;
+                    // Link de Google Maps directo con coordenadas actuales
                     const mapLink = `https://www.google.com/maps?q=${lat},${lon}`;
                     const msg = `📍 *UBICACIÓN DE ENTREGA:* \n${mapLink}`;
+                    
                     window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent(msg)}`;
                     btnText.innerText = "ENVIAR UBICACIÓN DE ENTREGA";
                 },
-                () => { 
-                    alert("Active su GPS y permita el acceso para enviar la ubicación exacta."); 
+                (err) => { 
+                    alert("Error: Active su GPS y permita el acceso para obtener la ubicación en tiempo actual."); 
                     btnText.innerText = "ENVIAR UBICACIÓN DE ENTREGA"; 
                 },
-                { enableHighAccuracy: true, timeout: 8000 }
+                { 
+                    enableHighAccuracy: true, // Fuerza el uso de GPS satelital (Tiempo real)
+                    timeout: 10000,           // Espera hasta 10 segundos para fijar posición
+                    maximumAge: 0             // No acepta ubicaciones viejas guardadas
+                }
             );
         }
 
