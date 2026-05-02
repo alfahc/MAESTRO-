@@ -2,311 +2,200 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Alfa HC | Sistema Maestro Oficial</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Alfa HC | Gestión Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-        
-        :root {
-            --midnight: #121b2d;
-            --gold: #f4b41a;
-            --whatsapp: #25D366;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; touch-action: pan-y; }
-
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--midnight);
-            height: 100dvh; width: 100vw; overflow: hidden;
-            display: flex; flex-direction: column; color: white;
-        }
-
-        .hero-gradient { background: radial-gradient(circle at center, #1e293b 0%, var(--midnight) 100%); }
-
-        .sticky-nav {
-            background: var(--midnight); border-bottom: 2px solid var(--gold);
-            padding: 10px 20px; flex-shrink: 0;
-            display: flex; justify-content: space-between; align-items: center; z-index: 50;
-        }
-
-        .view-section { display: none; flex: 1; height: 100%; overflow: hidden; width: 100%; }
-        .view-active { display: flex; flex-direction: column; }
-
-        .static-container {
-            flex: 1; display: flex; flex-direction: column;
-            background: #f8fafc; padding: 12px; overflow-y: auto; width: 100%;
-        }
-
-        /* DISEÑO DE TARJETAS DEFINITIVO */
-        .product-card {
-            background: white; display: flex; align-items: center; justify-content: space-between;
-            padding: 12px 15px; border-radius: 14px; border: 1px solid #e2e8f0;
-            margin-bottom: 8px; color: #334155; box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-        }
-
-        .qty-btn {
-            background: #f1f5f9; width: 32px; height: 32px;
-            border-radius: 10px; display: flex; align-items: center; justify-content: center;
-            font-weight: bold; border: 1px solid #e2e8f0; color: #1e293b;
-        }
-
-        /* UBICACIÓN POTENTE (DISEÑO DEFINITIVO) */
-        .btn-location-maps {
-            background: linear-gradient(135deg, #4285F4 0%, #34A853 100%);
-            color: white; padding: 12px 24px; border-radius: 50px; font-weight: 800;
-            display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-            font-size: 11px; text-transform: uppercase;
-            border: 2px solid rgba(255, 255, 255, 0.2); margin-bottom: 15px;
-            box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3); transition: transform 0.2s;
-        }
-        .btn-location-maps i { color: #EA4335; font-size: 1.2rem; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2)); }
-
-        .input-data {
-            width: 100%; padding: 12px; margin-top: 8px;
-            border-radius: 12px; border: 1px solid #cbd5e1;
-            color: #1e293b; font-size: 13px; font-weight: 600; background: white;
-        }
-
-        /* BUSCADOR PREDICTIVO */
-        .search-container { position: relative; width: 100%; }
-        #search-results {
-            position: absolute; top: 100%; left: 0; right: 0;
-            background: white; border: 1px solid #e2e8f0;
-            border-radius: 0 0 12px 12px; z-index: 100;
-            max-height: 160px; overflow-y: auto; display: none;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
-        .search-item { padding: 12px; border-bottom: 1px solid #f1f5f9; color: #334155; font-size: 13px; cursor: pointer; }
-
-        .footer-total {
-            background: var(--midnight); padding: 15px 20px;
-            padding-bottom: calc(15px + env(safe-area-inset-bottom));
-            border-top: 1px solid #1e293b;
-        }
-
-        .btn-main {
-            background-color: var(--gold); color: black;
-            padding: 16px; border-radius: 16px; font-weight: 800;
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            width: 100%; box-shadow: 0 4px 12px rgba(244, 180, 26, 0.3);
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+        :root { --midnight: #121b2d; --gold: #f4b41a; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--midnight); color: white; margin: 0; }
+        .view-section { display: none; min-height: 100vh; flex-direction: column; width: 100%; }
+        .view-active { display: flex; }
+        .card { background: white; border-radius: 15px; padding: 15px; margin-bottom: 10px; color: #334155; border: 1px solid #e2e8f0; }
+        .btn-gold { background: var(--gold); color: black; padding: 15px; border-radius: 12px; font-weight: 800; width: 100%; border: none; }
+        input { width: 100%; padding: 12px; margin-top: 8px; border-radius: 10px; border: 1px solid #cbd5e1; color: black; font-weight: 600; }
+        .fixed-footer { position: fixed; bottom: 0; left: 0; right: 0; background: var(--midnight); padding: 15px; border-top: 1px solid #1e293b; z-index: 1000; }
+        .search-results { position: absolute; background: white; width: 100%; z-index: 50; border-radius: 0 0 10px 10px; box-shadow: 0 10px 15px rgba(0,0,0,0.2); max-height: 200px; overflow-y: auto; }
     </style>
 </head>
 <body>
 
-    <nav class="sticky-nav">
-        <div class="flex flex-col">
-            <h1 class="text-lg font-black italic leading-none uppercase tracking-tighter text-gold">ALFA HC</h1>
-            <p class="text-[7px] uppercase tracking-[0.2em] text-slate-400 font-bold mt-1">RIF: J-411261297</p>
+    <nav class="p-4 border-b-2 border-gold flex justify-between items-center sticky top-0 bg-[#121b2d] z-[1100]">
+        <div>
+            <h1 class="text-lg font-black text-gold italic">ALFA HC</h1>
+            <p class="text-[8px] text-slate-400 font-bold uppercase tracking-widest">RIF: J-411261297</p>
         </div>
-        <button onclick="goBack()" id="back-btn" class="hidden text-white text-[10px] font-bold uppercase border border-slate-700 px-4 py-2 rounded-xl bg-slate-800">
-             Volver
-        </button>
+        <button onclick="goBack()" id="back-btn" class="hidden bg-slate-800 text-[10px] px-3 py-2 rounded-lg font-bold">VOLVER</button>
     </nav>
 
-    <section id="view-hero" class="view-section view-active hero-gradient items-center justify-between px-10 py-12 text-center">
-        <div class="mt-4">
-             <div class="inline-block border border-gold/40 bg-gold/10 rounded-full px-5 py-1.5">
-                <span class="text-[9px] font-bold tracking-widest uppercase text-gold">Gestión Profesional</span>
-            </div>
-        </div>
-        
-        <div class="w-full flex flex-col gap-5">
-            <h2 class="text-xl font-extrabold mb-2 tracking-tight text-white/90">¿Qué desea realizar hoy?</h2>
-            
-            <button onclick="goTo('order')" class="btn-main">
-                <i class="fas fa-plus-circle text-lg"></i> NUEVO PEDIDO / NOTA
-            </button>
-
-            <button onclick="goTo('debts')" class="bg-white text-slate-800 p-4 rounded-2xl font-black text-sm w-full shadow-xl flex items-center justify-center gap-3">
-                <i class="fas fa-wallet text-blue-600"></i> CUENTAS POR COBRAR
-            </button>
-
-            <div class="mt-4">
-                <button onclick="enviarUbicacion()" class="btn-location-maps">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span id="txt-loc">ENVIAR MI UBICACIÓN</span>
-                </button>
-            </div>
-        </div>
-        
-        <p class="text-slate-500 text-[8px] font-bold uppercase tracking-[0.3em]">Calidad • Puntualidad • Servicio</p>
+    <section id="view-hero" class="view-section view-active items-center justify-center p-8 space-y-4">
+        <button onclick="goTo('order')" class="btn-gold shadow-lg"><i class="fas fa-cart-plus mr-2"></i> NUEVO PEDIDO</button>
+        <button onclick="goTo('debts')" class="w-full bg-white text-slate-800 p-4 rounded-xl font-black shadow-lg"><i class="fas fa-wallet text-blue-600 mr-2"></i> CARTERA DE DEUDORES</button>
+        <button onclick="enviarUbicacion()" class="bg-gradient-to-r from-blue-500 to-green-500 text-white px-6 py-3 rounded-full font-bold text-xs uppercase tracking-widest"><i class="fas fa-map-marker-alt mr-2 text-red-500"></i> Compartir Ubicación</button>
     </section>
 
     <section id="view-order" class="view-section">
-        <div class="static-container">
-            <div id="lista-productos"></div>
+        <div class="p-4 pb-40 overflow-y-auto bg-slate-50 flex-1">
+            <div id="product-list" class="space-y-2"></div>
             
-            <div class="mt-6 p-5 bg-white rounded-2xl border border-gold/20 shadow-sm mb-10">
-                <h4 class="text-[10px] font-black text-slate-400 uppercase mb-3">Buscador Predictivo</h4>
-                <div class="search-container">
-                    <input id="search-input" type="text" placeholder="Escriba nombre del cliente..." class="input-data !mt-0 border-gold/30 bg-gold/5" oninput="filtrarCli()">
-                    <div id="search-results"></div>
+            <div class="card mt-6">
+                <h4 class="text-[10px] font-black text-slate-400 uppercase mb-2">Buscador / Datos Cliente</h4>
+                <div class="relative">
+                    <input id="inp-nom" type="text" placeholder="Nombre o Negocio" oninput="buscarCliente(this.value)">
+                    <div id="results" class="search-results hidden"></div>
                 </div>
-
-                <hr class="my-5 border-slate-100">
-                
-                <h4 class="text-[10px] font-black text-slate-700 uppercase mb-2">Datos del Cliente</h4>
-                <input id="inp-nom" type="text" placeholder="Nombre o Negocio" class="input-data">
-                <input id="inp-rif" type="text" placeholder="RIF o Cédula" class="input-data">
-                <input id="inp-dir" type="text" placeholder="Dirección de entrega" class="input-data">
+                <input id="inp-rif" type="text" placeholder="RIF o Cédula">
+                <input id="inp-dir" type="text" placeholder="Dirección del Local">
             </div>
         </div>
-        
-        <footer class="footer-total">
-            <div class="flex justify-between items-center mb-4 px-2">
-                <span class="text-white/60 text-[10px] font-bold uppercase">TOTAL PEDIDO:</span>
-                <span id="total-monto" class="text-gold text-2xl font-black">$0.00</span>
+
+        <footer class="fixed-footer">
+            <div class="flex justify-between items-center mb-3">
+                <span class="text-slate-400 text-xs font-bold">MONTO PEDIDO:</span>
+                <span id="total-val" class="text-gold text-2xl font-black">$0.00</span>
             </div>
-            <button onclick="procesarNota()" class="bg-emerald-500 text-white p-4 rounded-2xl font-black w-full flex items-center justify-center gap-3 shadow-lg">
-                <i class="fas fa-file-invoice-dollar text-xl"></i> GENERAR NOTA Y WHATSAPP
+            <button onclick="procesarVenta()" class="w-full bg-emerald-500 p-4 rounded-xl font-black flex items-center justify-center gap-2">
+                <i class="fas fa-file-invoice-dollar"></i> GENERAR NOTA Y WHATSAPP
             </button>
         </footer>
     </section>
 
-    <section id="view-debts" class="view-section">
-        <div class="bg-blue-50 px-6 py-4 border-b flex justify-between items-center">
-            <h3 class="text-[11px] font-black text-blue-800 uppercase tracking-tighter">Cartera de Deudores</h3>
-            <span id="cartera-total" class="text-xs font-black text-blue-600 bg-blue-100 px-3 py-1 rounded-full"></span>
+    <section id="view-debts" class="view-section bg-slate-50">
+        <div id="debt-list" class="p-4 flex-1"></div>
+        <div class="fixed-footer text-center">
+            <p id="total-cartera" class="text-gold font-black text-lg"></p>
         </div>
-        <div class="static-container" id="lista-deudas">
-            </div>
     </section>
 
     <script>
-        const productos = [
+        const prods = [
             { n: 'BELMONT', p: 25.60 }, { n: 'BELMONT MEDIA CAJA', p: 15.40 },
             { n: 'LUCKY NOVA', p: 30.60 }, { n: 'LUCKY RED', p: 28.00 },
             { n: 'PALL MALL', p: 25.60 }, { n: 'VICEROY', p: 16.50 },
             { n: 'CONSUL', p: 14.00 }, { n: 'LUCKY COSMIC', p: 30.60 },
             { n: 'ENCENDEDOR BIC', p: 1.50 }
         ];
-        let carrito = {};
+        let cart = {};
 
-        function goTo(v) { window.history.pushState({v}, ""); render(v); }
+        // NAVEGACIÓN
+        function goTo(v) { window.history.pushState({v}, ""); show(v); }
         function goBack() { window.history.back(); }
-        window.onpopstate = (e) => render(e.state?.v || 'hero');
-
-        function render(v) {
+        window.onpopstate = (e) => show(e.state?.v || 'hero');
+        function show(v) {
             document.querySelectorAll('.view-section').forEach(s => s.classList.remove('view-active'));
-            document.getElementById('view-' + v).classList.add('view-active');
+            document.getElementById('view-'+v).classList.add('view-active');
             document.getElementById('back-btn').classList.toggle('hidden', v === 'hero');
             if(v === 'order') renderProds();
             if(v === 'debts') renderDebts();
         }
 
+        // LÓGICA PEDIDO
         function renderProds() {
-            document.getElementById('lista-productos').innerHTML = productos.map(p => `
-                <div class="product-card">
-                    <div class="flex flex-col"><b class="text-xs uppercase">${p.n}</b><small class="text-slate-400 font-bold">$${p.p.toFixed(2)}</small></div>
-                    <div class="flex items-center gap-4">
-                        <button onclick="upd('${p.n}',-1)" class="qty-btn">-</button>
-                        <b class="w-4 text-center text-sm">${carrito[p.n] || 0}</b>
-                        <button onclick="upd('${p.n}',1)" class="qty-btn bg-slate-800 text-white">+</button>
+            document.getElementById('product-list').innerHTML = prods.map(p => `
+                <div class="card flex justify-between items-center py-2">
+                    <div><b class="text-xs uppercase">${p.n}</b><br><small class="text-slate-400">$${p.p.toFixed(2)}</small></div>
+                    <div class="flex items-center gap-3">
+                        <button onclick="upd('${p.n}',-1)" class="w-8 h-8 bg-slate-100 rounded-lg font-bold">-</button>
+                        <b class="w-4 text-center text-sm">${cart[p.n] || 0}</b>
+                        <button onclick="upd('${p.n}',1)" class="w-8 h-8 bg-slate-800 text-white rounded-lg font-bold">+</button>
                     </div>
                 </div>`).join('');
             calc();
         }
-
-        function upd(n, c) { carrito[n] = Math.max(0, (carrito[n] || 0) + c); renderProds(); }
+        function upd(n, c) { cart[n] = Math.max(0, (cart[n] || 0) + c); renderProds(); }
         function calc() {
             let t = 0;
-            productos.forEach(p => t += (carrito[p.n] || 0) * p.p);
-            document.getElementById('total-monto').innerText = `$${t.toFixed(2)}`;
+            prods.forEach(p => t += (cart[p.n] || 0) * p.p);
+            document.getElementById('total-val').innerText = `$${t.toFixed(2)}`;
             return t;
         }
 
-        function filtrarCli() {
-            const b = document.getElementById('search-input').value.toUpperCase();
-            const res = document.getElementById('search-results');
-            const db = JSON.parse(localStorage.getItem('alfa_v3')) || {};
-            const m = Object.keys(db).filter(k => k.includes(b));
-            res.innerHTML = m.map(k => `<div onclick="fill('${k}')" class="search-item"><b>${k}</b></div>`).join('');
-            res.style.display = (b && m.length) ? 'block' : 'none';
+        // MEMORIA DE CLIENTES
+        function buscarCliente(val) {
+            const db = JSON.parse(localStorage.getItem('alfa_db')) || {};
+            const res = document.getElementById('results');
+            const matches = Object.keys(db).filter(k => k.toLowerCase().includes(val.toLowerCase()));
+            
+            if(val && matches.length) {
+                res.innerHTML = matches.map(m => `<div onclick="setCli('${m}')" class="p-3 border-b text-sm text-slate-700 font-bold bg-white">${m}</div>`).join('');
+                res.classList.remove('hidden');
+            } else res.classList.add('hidden');
         }
 
-        function fill(k) {
-            const db = JSON.parse(localStorage.getItem('alfa_v3'));
-            document.getElementById('inp-nom').value = k;
-            document.getElementById('inp-rif').value = db[k].rif;
-            document.getElementById('inp-dir').value = db[k].dir;
-            document.getElementById('search-results').style.display = 'none';
+        function setCli(m) {
+            const db = JSON.parse(localStorage.getItem('alfa_db'));
+            document.getElementById('inp-nom').value = m;
+            document.getElementById('inp-rif').value = db[m].rif;
+            document.getElementById('inp-dir').value = db[m].dir;
+            document.getElementById('results').classList.add('hidden');
         }
 
-        function procesarNota() {
+        // PROCESAR VENTA Y LIMPIAR
+        function procesarVenta() {
             const nom = document.getElementById('inp-nom').value.trim().toUpperCase();
             const total = calc();
-            if(!nom || total <= 0) return alert("Faltan datos");
+            if(!nom || total <= 0) return alert("Faltan datos o productos");
 
-            let db = JSON.parse(localStorage.getItem('alfa_v3')) || {};
+            let db = JSON.parse(localStorage.getItem('alfa_db')) || {};
             if(!db[nom]) db[nom] = { rif: document.getElementById('inp-rif').value, dir: document.getElementById('inp-dir').value, deuda: 0 };
             db[nom].deuda += total;
-            localStorage.setItem('alfa_v3', JSON.stringify(db));
+            localStorage.setItem('alfa_db', JSON.stringify(db));
 
+            // PDF
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
-            doc.setFillColor(18, 27, 45); doc.rect(0, 0, 210, 30, 'F');
-            doc.setTextColor(244, 180, 26); doc.setFontSize(22); doc.text("ALFA HC", 15, 20);
-            doc.setTextColor(0); doc.setFontSize(10); doc.text(`CLIENTE: ${nom}`, 15, 45);
-            doc.text(`FECHA: ${new Date().toLocaleDateString()}`, 150, 45);
-            const filas = [];
-            productos.forEach(p => { if(carrito[p.n]) filas.push([carrito[p.n], p.n, `$${p.p.toFixed(2)}`, `$${(carrito[p.n]*p.p).toFixed(2)}`]); });
-            doc.autoTable({ startY: 55, head: [['CANT', 'PRODUCTO', 'PRECIO', 'SUBTOTAL']], body: filas, headStyles:{fillColor:[18, 27, 45]} });
-            doc.setFont("helvetica", "bold"); doc.text(`TOTAL: $${total.toFixed(2)}`, 150, doc.lastAutoTable.finalY + 10);
+            doc.text("ALFA HC - NOTA DE ENTREGA", 15, 20);
+            const rows = [];
+            prods.forEach(p => { if(cart[p.n]) rows.push([p.n, cart[p.n], `$${(cart[p.n]*p.p).toFixed(2)}`]); });
+            doc.autoTable({ startY: 30, head: [['Producto', 'Cant', 'Total']], body: rows });
             doc.save(`Nota_${nom}.pdf`);
 
-            window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent(`*ALFA HC - NUEVA NOTA*\nCliente: ${nom}\nTotal: $${total.toFixed(2)}\n\n_PDF Generado_`)}`;
-            carrito = {}; renderProds();
+            // WhatsApp
+            window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent(`*ALFA HC - NUEVO PEDIDO*\nCliente: ${nom}\nTotal: $${total.toFixed(2)}`)}`;
+
+            // --- AQUÍ ESTÁ LA LIMPIEZA ---
+            cart = {}; // Vaciar carrito
+            document.getElementById('inp-nom').value = "";
+            document.getElementById('inp-rif').value = "";
+            document.getElementById('inp-dir').value = "";
+            renderProds(); // Resetear vista
         }
 
+        // COBRANZAS
         function renderDebts() {
-            const db = JSON.parse(localStorage.getItem('alfa_v3')) || {};
-            let carT = 0;
+            const db = JSON.parse(localStorage.getItem('alfa_db')) || {};
+            let tG = 0;
             const html = Object.keys(db).map(k => {
                 if(db[k].deuda <= 0) return '';
-                carT += db[k].deuda;
-                return `
-                <div class="bg-white p-5 rounded-2xl border mb-3 flex flex-col gap-3">
-                    <div class="flex justify-between items-start">
-                        <div><b class="text-slate-800 uppercase text-sm">${k}</b><p class="text-[10px] text-slate-400">RIF: ${db[k].rif}</p></div>
-                        <b class="text-red-500 text-lg">$${db[k].deuda.toFixed(2)}</b>
-                    </div>
-                    <button onclick="abonar('${k}')" class="w-full bg-emerald-500 text-white font-black py-3 rounded-xl text-xs">REGISTRAR PAGO / ABONO</button>
+                tG += db[k].deuda;
+                return `<div class="card flex justify-between items-center">
+                    <div><b>${k}</b><br><small class="text-red-500 font-bold">$${db[k].deuda.toFixed(2)}</small></div>
+                    <button onclick="abonar('${k}')" class="bg-emerald-500 text-white text-[10px] px-4 py-2 rounded-lg font-black">REGISTRAR PAGO</button>
                 </div>`;
             }).join('');
-            document.getElementById('lista-deudas').innerHTML = html || '<p class="text-center text-slate-400 mt-10">No hay cuentas pendientes</p>';
-            document.getElementById('cartera-total').innerText = `TOTAL: $${carT.toFixed(2)}`;
+            document.getElementById('debt-list').innerHTML = html || '<p class="text-center text-slate-400 py-20 font-bold">Sin deudas pendientes</p>';
+            document.getElementById('total-cartera').innerText = `TOTAL POR COBRAR: $${tG.toFixed(2)}`;
         }
 
         function abonar(k) {
-            const a = parseFloat(prompt(`Registrar abono para ${k}:`));
+            const a = parseFloat(prompt(`Monto a pagar por ${k}:`));
             if(!a || a <= 0) return;
-            let db = JSON.parse(localStorage.getItem('alfa_v3'));
+            let db = JSON.parse(localStorage.getItem('alfa_db'));
             db[k].deuda = Math.max(0, db[k].deuda - a);
-            localStorage.setItem('alfa_v3', JSON.stringify(db));
+            localStorage.setItem('alfa_db', JSON.stringify(db));
             renderDebts();
         }
 
         function enviarUbicacion() {
-            const btn = document.getElementById('txt-loc');
-            btn.innerText = "LOCALIZANDO...";
             navigator.geolocation.getCurrentPosition(p => {
-                const lat = p.coords.latitude;
-                const lon = p.coords.longitude;
-                // ENLACE CORREGIDO PARA QUE NO DE ERROR 404
-                const link = `https://www.google.com/maps?q=${lat},${lon}`;
-                window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent('📍 MI UBICACIÓN DE ENTREGA: ' + link)}`;
-                btn.innerText = "ENVIAR MI UBICACIÓN";
-            }, () => { alert("Active el GPS"); btn.innerText = "REINTENTAR"; });
+                const link = `https://www.google.com/maps?q=${p.coords.latitude},${p.coords.longitude}`;
+                window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent('📍 UBICACIÓN DE ENTREGA: ' + link)}`;
+            }, () => alert("GPS Desactivado"));
         }
-        
-        window.onload = () => render('hero');
     </script>
 </body>
 </html>
