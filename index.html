@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Alfa HC | Sistema de Gestión Maestro</title>
+    <title>Alfa HC | Sistema Maestro Oficial</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -35,40 +35,28 @@
             display: flex; justify-content: space-between; align-items: center; z-index: 50;
         }
 
-        .view-section { display: none; flex: 1; height: 100%; overflow: hidden; }
+        .view-section { display: none; flex: 1; height: 100%; overflow: hidden; width: 100%; }
         .view-active { display: flex; flex-direction: column; }
 
         .static-container {
             flex: 1; display: flex; flex-direction: column;
-            background: #f8fafc; padding: 8px 12px; overflow-y: auto;
+            background: #f8fafc; padding: 12px; overflow-y: auto; width: 100%;
         }
 
+        /* DISEÑO DE TARJETAS DEFINITIVO */
         .product-card {
             background: white; display: flex; align-items: center; justify-content: space-between;
-            padding: 10px 14px; border-radius: 12px; border: 1px solid #e2e8f0;
-            margin-bottom: 6px; color: #334155;
+            padding: 12px 15px; border-radius: 14px; border: 1px solid #e2e8f0;
+            margin-bottom: 8px; color: #334155; box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
 
         .qty-btn {
-            background: #f1f5f9; width: 30px; height: 30px;
-            border-radius: 8px; display: flex; align-items: center; justify-content: center;
-            font-weight: bold; border: 1px solid #e2e8f0;
+            background: #f1f5f9; width: 32px; height: 32px;
+            border-radius: 10px; display: flex; align-items: center; justify-content: center;
+            font-weight: bold; border: 1px solid #e2e8f0; color: #1e293b;
         }
 
-        .catalog-footer {
-            background: var(--midnight); padding: 12px 20px;
-            padding-bottom: calc(12px + env(safe-area-inset-bottom));
-            flex-shrink: 0; border-top: 1px solid #1e293b;
-        }
-
-        .btn-whatsapp-direct {
-            background-color: var(--whatsapp); color: white;
-            padding: 14px; border-radius: 14px; font-weight: 800;
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            text-decoration: none; animation: pulse 2s infinite;
-        }
-
-        /* BOTÓN ESTILO GOOGLE MAPS QUE ELEGISTE */
+        /* UBICACIÓN POTENTE (DISEÑO DEFINITIVO) */
         .btn-location-maps {
             background: linear-gradient(135deg, #4285F4 0%, #34A853 100%);
             color: white; padding: 12px 24px; border-radius: 50px; font-weight: 800;
@@ -77,32 +65,37 @@
             border: 2px solid rgba(255, 255, 255, 0.2); margin-bottom: 15px;
             box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3); transition: transform 0.2s;
         }
-        .btn-location-maps i { color: #EA4335; font-size: 1.2rem; }
+        .btn-location-maps i { color: #EA4335; font-size: 1.2rem; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2)); }
 
         .input-data {
-            width: 100%; padding: 10px; margin-top: 8px;
-            border-radius: 10px; border: 1px solid #cbd5e1;
-            color: #1e293b; font-size: 12px; font-weight: 600;
+            width: 100%; padding: 12px; margin-top: 8px;
+            border-radius: 12px; border: 1px solid #cbd5e1;
+            color: #1e293b; font-size: 13px; font-weight: 600; background: white;
         }
 
-        /* Buscador Predictivo */
+        /* BUSCADOR PREDICTIVO */
         .search-container { position: relative; width: 100%; }
         #search-results {
             position: absolute; top: 100%; left: 0; right: 0;
             background: white; border: 1px solid #e2e8f0;
-            border-radius: 0 0 10px 10px; z-index: 100;
-            max-height: 150px; overflow-y: auto; display: none;
+            border-radius: 0 0 12px 12px; z-index: 100;
+            max-height: 160px; overflow-y: auto; display: none;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
-        .search-item { padding: 10px; border-bottom: 1px solid #f1f5f9; color: #334155; font-size: 12px; cursor: pointer; }
+        .search-item { padding: 12px; border-bottom: 1px solid #f1f5f9; color: #334155; font-size: 13px; cursor: pointer; }
 
-        /* Tarjeta de Deuda */
-        .debt-card {
-            background: white; padding: 15px; border-radius: 15px;
-            border-left: 5px solid var(--gold); margin-bottom: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05); color: #334155;
+        .footer-total {
+            background: var(--midnight); padding: 15px 20px;
+            padding-bottom: calc(15px + env(safe-area-inset-bottom));
+            border-top: 1px solid #1e293b;
         }
 
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+        .btn-main {
+            background-color: var(--gold); color: black;
+            padding: 16px; border-radius: 16px; font-weight: 800;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            width: 100%; box-shadow: 0 4px 12px rgba(244, 180, 26, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -110,9 +103,9 @@
     <nav class="sticky-nav">
         <div class="flex flex-col">
             <h1 class="text-lg font-black italic leading-none uppercase tracking-tighter text-gold">ALFA HC</h1>
-            <p class="text-[6px] uppercase tracking-[0.2em] text-slate-400 font-bold mt-1">RIF: J-411261297</p>
+            <p class="text-[7px] uppercase tracking-[0.2em] text-slate-400 font-bold mt-1">RIF: J-411261297</p>
         </div>
-        <button onclick="goBack()" id="back-btn" class="hidden text-white text-[9px] font-bold uppercase border border-slate-700 px-3 py-1.5 rounded-lg bg-slate-800">
+        <button onclick="goBack()" id="back-btn" class="hidden text-white text-[10px] font-bold uppercase border border-slate-700 px-4 py-2 rounded-xl bg-slate-800">
              Volver
         </button>
     </nav>
@@ -120,261 +113,200 @@
     <section id="view-hero" class="view-section view-active hero-gradient items-center justify-between px-10 py-12 text-center">
         <div class="mt-4">
              <div class="inline-block border border-gold/40 bg-gold/10 rounded-full px-5 py-1.5">
-                <span class="text-[9px] font-bold tracking-widest uppercase text-gold">SISTEMA DE GESTIÓN</span>
+                <span class="text-[9px] font-bold tracking-widest uppercase text-gold">Gestión Profesional</span>
             </div>
         </div>
-        <div class="w-full flex flex-col gap-4">
-            <h2 class="text-xl font-extrabold mb-4 tracking-tight leading-[1.2] text-white/90">
-                Seleccione una operación:
-            </h2>
-
-            <button onclick="goToView('order')" class="bg-[#f4b41a] text-black px-8 py-4 rounded-2xl font-black text-sm w-full shadow-xl flex items-center justify-center gap-3">
-                <i class="fas fa-cart-plus"></i> NUEVO PEDIDO
+        
+        <div class="w-full flex flex-col gap-5">
+            <h2 class="text-xl font-extrabold mb-2 tracking-tight text-white/90">¿Qué desea realizar hoy?</h2>
+            
+            <button onclick="goTo('order')" class="btn-main">
+                <i class="fas fa-plus-circle text-lg"></i> NUEVO PEDIDO / NOTA
             </button>
 
-            <button onclick="goToView('debts')" class="bg-white text-slate-800 px-8 py-4 rounded-2xl font-black text-sm w-full shadow-xl flex items-center justify-center gap-3">
-                <i class="fas fa-wallet text-blue-600"></i> COBRANZAS (CXC)
+            <button onclick="goTo('debts')" class="bg-white text-slate-800 p-4 rounded-2xl font-black text-sm w-full shadow-xl flex items-center justify-center gap-3">
+                <i class="fas fa-wallet text-blue-600"></i> CUENTAS POR COBRAR
             </button>
 
-            <button onclick="enviarUbicacion()" class="btn-location-maps w-full mt-4">
-                <i class="fas fa-map-marker-alt"></i>
-                <span id="txt-loc">COMPARTIR MI UBICACIÓN</span>
-            </button>
+            <div class="mt-4">
+                <button onclick="enviarUbicacion()" class="btn-location-maps">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span id="txt-loc">ENVIAR MI UBICACIÓN</span>
+                </button>
+            </div>
         </div>
+        
         <p class="text-slate-500 text-[8px] font-bold uppercase tracking-[0.3em]">Calidad • Puntualidad • Servicio</p>
     </section>
 
     <section id="view-order" class="view-section">
-        <div class="bg-emerald-50 px-5 py-2 border-b border-emerald-100 flex justify-between items-center">
-            <h3 class="text-[9px] font-black text-emerald-800 uppercase tracking-widest">Armar Nota de Entrega</h3>
-        </div>
         <div class="static-container">
-            <div id="order-list"></div>
+            <div id="lista-productos"></div>
             
-            <div class="mt-4 p-4 bg-white rounded-xl border border-gold/30 shadow-sm mb-6">
-                <h4 class="text-[10px] font-black text-slate-700 uppercase mb-2">Buscador de Clientes</h4>
+            <div class="mt-6 p-5 bg-white rounded-2xl border border-gold/20 shadow-sm mb-10">
+                <h4 class="text-[10px] font-black text-slate-400 uppercase mb-3">Buscador Predictivo</h4>
                 <div class="search-container">
-                    <input id="search-input" type="text" placeholder="Escriba nombre del cliente..." class="input-data bg-gold/5" oninput="filtrarClientes()">
+                    <input id="search-input" type="text" placeholder="Escriba nombre del cliente..." class="input-data !mt-0 border-gold/30 bg-gold/5" oninput="filtrarCli()">
                     <div id="search-results"></div>
                 </div>
 
-                <hr class="my-4 border-slate-100">
+                <hr class="my-5 border-slate-100">
                 
-                <h4 class="text-[10px] font-black text-slate-700 uppercase mb-2">Datos para la Nota</h4>
-                <input id="inp-cliente" type="text" placeholder="Nombre o Negocio" class="input-data">
+                <h4 class="text-[10px] font-black text-slate-700 uppercase mb-2">Datos del Cliente</h4>
+                <input id="inp-nom" type="text" placeholder="Nombre o Negocio" class="input-data">
                 <input id="inp-rif" type="text" placeholder="RIF o Cédula" class="input-data">
-                <input id="inp-direccion" type="text" placeholder="Dirección de entrega" class="input-data">
+                <input id="inp-dir" type="text" placeholder="Dirección de entrega" class="input-data">
             </div>
         </div>
-        <footer class="catalog-footer">
+        
+        <footer class="footer-total">
             <div class="flex justify-between items-center mb-4 px-2">
-                <span class="text-white/60 text-[10px] font-bold uppercase">MONTO TOTAL:</span>
-                <span id="grand-total" class="text-gold text-2xl font-black">$0.00</span>
+                <span class="text-white/60 text-[10px] font-bold uppercase">TOTAL PEDIDO:</span>
+                <span id="total-monto" class="text-gold text-2xl font-black">$0.00</span>
             </div>
-            <button onclick="finalizarVenta()" class="btn-whatsapp-direct w-full">
-                <i class="fas fa-file-invoice-dollar text-2xl"></i>
-                <span>GENERAR NOTA Y ENVIAR</span>
+            <button onclick="procesarNota()" class="bg-emerald-500 text-white p-4 rounded-2xl font-black w-full flex items-center justify-center gap-3 shadow-lg">
+                <i class="fas fa-file-invoice-dollar text-xl"></i> GENERAR NOTA Y WHATSAPP
             </button>
         </footer>
     </section>
 
     <section id="view-debts" class="view-section">
-        <div class="bg-blue-50 px-5 py-3 border-b flex justify-between items-center">
-            <h3 class="text-[10px] font-black text-blue-800 uppercase">Cartera de Clientes</h3>
-            <span id="total-global-deuda" class="text-xs font-black text-blue-600"></span>
+        <div class="bg-blue-50 px-6 py-4 border-b flex justify-between items-center">
+            <h3 class="text-[11px] font-black text-blue-800 uppercase tracking-tighter">Cartera de Deudores</h3>
+            <span id="cartera-total" class="text-xs font-black text-blue-600 bg-blue-100 px-3 py-1 rounded-full"></span>
         </div>
-        <div class="static-container" id="debt-list">
+        <div class="static-container" id="lista-deudas">
             </div>
     </section>
 
     <script>
-        const products = [
-            { name: 'BELMONT', price: 25.60 },
-            { name: 'BELMONT MEDIA CAJA', price: 15.40 },
-            { name: 'LUCKY NOVA', price: 30.60 },
-            { name: 'LUCKY RED ORIGINAL', price: 28.00 },
-            { name: 'PALL MALL', price: 25.60 },
-            { name: 'VICEROY', price: 16.50 },
-            { name: 'CONSUL', price: 14.00 },
-            { name: 'LUCKY COSMIC', price: 30.60 },
-            { name: 'ENCENDEDOR BIC', price: 1.50 }
+        const productos = [
+            { n: 'BELMONT', p: 25.60 }, { n: 'BELMONT MEDIA CAJA', p: 15.40 },
+            { n: 'LUCKY NOVA', p: 30.60 }, { n: 'LUCKY RED', p: 28.00 },
+            { n: 'PALL MALL', p: 25.60 }, { n: 'VICEROY', p: 16.50 },
+            { n: 'CONSUL', p: 14.00 }, { n: 'LUCKY COSMIC', p: 30.60 },
+            { n: 'ENCENDEDOR BIC', p: 1.50 }
         ];
+        let carrito = {};
 
-        let cart = {};
-
-        // --- NAVEGACIÓN ---
-        function goToView(view) {
-            window.history.pushState({view: view}, "");
-            renderView(view);
-        }
-
+        function goTo(v) { window.history.pushState({v}, ""); render(v); }
         function goBack() { window.history.back(); }
-        window.onpopstate = function(e) { renderView(e.state?.view || 'hero'); };
+        window.onpopstate = (e) => render(e.state?.v || 'hero');
 
-        function renderView(view) {
-            ['view-hero', 'view-order', 'view-debts'].forEach(v => document.getElementById(v).classList.remove('view-active'));
-            document.getElementById('view-' + view).classList.add('view-active');
-            document.getElementById('back-btn').classList.toggle('hidden', view === 'hero');
-            if(view === 'order') renderOrderList();
-            if(view === 'debts') renderDebtList();
+        function render(v) {
+            document.querySelectorAll('.view-section').forEach(s => s.classList.remove('view-active'));
+            document.getElementById('view-' + v).classList.add('view-active');
+            document.getElementById('back-btn').classList.toggle('hidden', v === 'hero');
+            if(v === 'order') renderProds();
+            if(v === 'debts') renderDebts();
         }
 
-        // --- LÓGICA DE PRODUCTOS ---
-        function renderOrderList() {
-            const container = document.getElementById('order-list');
-            container.innerHTML = products.map(p => `
+        function renderProds() {
+            document.getElementById('lista-productos').innerHTML = productos.map(p => `
                 <div class="product-card">
-                    <div class="flex flex-col flex-1">
-                        <span class="text-[10px] font-black uppercase text-slate-700">${p.name}</span>
-                        <span class="text-[9px] font-bold text-slate-400">$${p.price.toFixed(2)}</span>
+                    <div class="flex flex-col"><b class="text-xs uppercase">${p.n}</b><small class="text-slate-400 font-bold">$${p.p.toFixed(2)}</small></div>
+                    <div class="flex items-center gap-4">
+                        <button onclick="upd('${p.n}',-1)" class="qty-btn">-</button>
+                        <b class="w-4 text-center text-sm">${carrito[p.n] || 0}</b>
+                        <button onclick="upd('${p.n}',1)" class="qty-btn bg-slate-800 text-white">+</button>
                     </div>
-                    <div class="flex items-center gap-3">
-                        <button onclick="updateQty('${p.name}', -1)" class="qty-btn text-slate-400">-</button>
-                        <span class="w-6 text-center font-black text-slate-800">${cart[p.name] || 0}</span>
-                        <button onclick="updateQty('${p.name}', 1)" class="qty-btn text-slate-900 font-black">+</button>
-                    </div>
-                </div>
-            `).join('');
-            calculateTotal();
+                </div>`).join('');
+            calc();
         }
 
-        function updateQty(name, change) {
-            cart[name] = Math.max(0, (cart[name] || 0) + change);
-            renderOrderList();
+        function upd(n, c) { carrito[n] = Math.max(0, (carrito[n] || 0) + c); renderProds(); }
+        function calc() {
+            let t = 0;
+            productos.forEach(p => t += (carrito[p.n] || 0) * p.p);
+            document.getElementById('total-monto').innerText = `$${t.toFixed(2)}`;
+            return t;
         }
 
-        function calculateTotal() {
-            let total = 0;
-            products.forEach(p => { if (cart[p.name]) total += p.price * cart[p.name]; });
-            document.getElementById('grand-total').innerText = `$${total.toFixed(2)}`;
-            return total;
+        function filtrarCli() {
+            const b = document.getElementById('search-input').value.toUpperCase();
+            const res = document.getElementById('search-results');
+            const db = JSON.parse(localStorage.getItem('alfa_v3')) || {};
+            const m = Object.keys(db).filter(k => k.includes(b));
+            res.innerHTML = m.map(k => `<div onclick="fill('${k}')" class="search-item"><b>${k}</b></div>`).join('');
+            res.style.display = (b && m.length) ? 'block' : 'none';
         }
 
-        // --- GESTIÓN DE DEUDAS Y NOTAS ---
-        function finalizarVenta() {
-            const nom = document.getElementById('inp-cliente').value.trim().toUpperCase();
-            const rif = document.getElementById('inp-rif').value.trim();
-            const dir = document.getElementById('inp-direccion').value.trim();
-            const total = calculateTotal();
-
-            if (!nom || total === 0) return alert("Faltan datos o productos");
-
-            // 1. Guardar/Actualizar Deuda en Memoria
-            let db = JSON.parse(localStorage.getItem('alfa_clientes')) || {};
-            if(!db[nom]) db[nom] = { rif, dir, deuda: 0 };
-            
-            db[nom].deuda += total; // Se suma el nuevo pedido a lo que ya debía
-            localStorage.setItem('alfa_clientes', JSON.stringify(db));
-
-            // 2. Generar Nota en PDF
-            generarNotaPDF(nom, rif, dir, total);
-
-            // 3. WhatsApp
-            let itemsMsg = "";
-            products.forEach(p => { if(cart[p.name]) itemsMsg += `• ${cart[p.name]}x ${p.name}\n`; });
-            const msg = `*ALFA HC - NOTA GENERADA*\n\n*CLIENTE:* ${nom}\n*TOTAL:* $${total.toFixed(2)}\n\n*PRODUCTOS:*\n${itemsMsg}\n_La nota de entrega ha sido generada con éxito._`;
-            window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent(msg)}`;
-
-            // Limpiar
-            cart = {};
-            renderOrderList();
+        function fill(k) {
+            const db = JSON.parse(localStorage.getItem('alfa_v3'));
+            document.getElementById('inp-nom').value = k;
+            document.getElementById('inp-rif').value = db[k].rif;
+            document.getElementById('inp-dir').value = db[k].dir;
+            document.getElementById('search-results').style.display = 'none';
         }
 
-        function generarNotaPDF(nom, rif, dir, total) {
+        function procesarNota() {
+            const nom = document.getElementById('inp-nom').value.trim().toUpperCase();
+            const total = calc();
+            if(!nom || total <= 0) return alert("Faltan datos");
+
+            let db = JSON.parse(localStorage.getItem('alfa_v3')) || {};
+            if(!db[nom]) db[nom] = { rif: document.getElementById('inp-rif').value, dir: document.getElementById('inp-dir').value, deuda: 0 };
+            db[nom].deuda += total;
+            localStorage.setItem('alfa_v3', JSON.stringify(db));
+
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
-            
-            // Estilo de la Nota
             doc.setFillColor(18, 27, 45); doc.rect(0, 0, 210, 30, 'F');
-            doc.setTextColor(244, 180, 26); doc.setFontSize(20); doc.text("ALFA HC", 15, 20);
-            doc.setTextColor(255, 255, 255); doc.setFontSize(8); doc.text("NOTA DE ENTREGA PROFESIONAL", 140, 20);
-
-            doc.setTextColor(0, 0, 0); doc.setFontSize(10);
-            doc.text(`CLIENTE: ${nom}`, 15, 40);
-            doc.text(`RIF/CI: ${rif}`, 15, 45);
-            doc.text(`FECHA: ${new Date().toLocaleDateString()}`, 140, 40);
-
+            doc.setTextColor(244, 180, 26); doc.setFontSize(22); doc.text("ALFA HC", 15, 20);
+            doc.setTextColor(0); doc.setFontSize(10); doc.text(`CLIENTE: ${nom}`, 15, 45);
+            doc.text(`FECHA: ${new Date().toLocaleDateString()}`, 150, 45);
             const filas = [];
-            products.forEach(p => {
-                if(cart[p.name]) filas.push([cart[p.name], p.name, `$${p.price.toFixed(2)}`, `$${(cart[p.name]*p.price).toFixed(2)}`]);
-            });
+            productos.forEach(p => { if(carrito[p.n]) filas.push([carrito[p.n], p.n, `$${p.p.toFixed(2)}`, `$${(carrito[p.n]*p.p).toFixed(2)}`]); });
+            doc.autoTable({ startY: 55, head: [['CANT', 'PRODUCTO', 'PRECIO', 'SUBTOTAL']], body: filas, headStyles:{fillColor:[18, 27, 45]} });
+            doc.setFont("helvetica", "bold"); doc.text(`TOTAL: $${total.toFixed(2)}`, 150, doc.lastAutoTable.finalY + 10);
+            doc.save(`Nota_${nom}.pdf`);
 
-            doc.autoTable({
-                startY: 55, head: [['CANT', 'PRODUCTO', 'PRECIO U.', 'SUBTOTAL']], body: filas,
-                headStyles: { fillColor: [18, 27, 45] }
-            });
-
-            doc.setFont("helvetica", "bold");
-            doc.text(`TOTAL A PAGAR: $${total.toFixed(2)}`, 140, doc.lastAutoTable.finalY + 10);
-            doc.setFontSize(7); doc.text("__________________________", 15, doc.lastAutoTable.finalY + 25);
-            doc.text("RECIBIDO CONFORME (FIRMA)", 15, doc.lastAutoTable.finalY + 29);
-
-            doc.save(`Nota_AlfaHC_${nom}.pdf`);
+            window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent(`*ALFA HC - NUEVA NOTA*\nCliente: ${nom}\nTotal: $${total.toFixed(2)}\n\n_PDF Generado_`)}`;
+            carrito = {}; renderProds();
         }
 
-        function renderDebtList() {
-            const list = document.getElementById('debt-list');
-            const db = JSON.parse(localStorage.getItem('alfa_clientes')) || {};
-            let totalCartera = 0;
-
-            const html = Object.keys(db).map(nom => {
-                const c = db[nom];
-                if(c.deuda <= 0) return '';
-                totalCartera += c.deuda;
+        function renderDebts() {
+            const db = JSON.parse(localStorage.getItem('alfa_v3')) || {};
+            let carT = 0;
+            const html = Object.keys(db).map(k => {
+                if(db[k].deuda <= 0) return '';
+                carT += db[k].deuda;
                 return `
-                <div class="debt-card">
+                <div class="bg-white p-5 rounded-2xl border mb-3 flex flex-col gap-3">
                     <div class="flex justify-between items-start">
-                        <div><h4 class="font-black text-sm uppercase">${nom}</h4><p class="text-[9px]">RIF: ${c.rif}</p></div>
-                        <div class="text-right text-red-600 font-black text-lg">$${c.deuda.toFixed(2)}</div>
+                        <div><b class="text-slate-800 uppercase text-sm">${k}</b><p class="text-[10px] text-slate-400">RIF: ${db[k].rif}</p></div>
+                        <b class="text-red-500 text-lg">$${db[k].deuda.toFixed(2)}</b>
                     </div>
-                    <button onclick="abonar('${nom}')" class="mt-3 w-full bg-emerald-500 text-white text-[10px] font-black py-2 rounded-lg">ABONAR PAGO</button>
+                    <button onclick="abonar('${k}')" class="w-full bg-emerald-500 text-white font-black py-3 rounded-xl text-xs">REGISTRAR PAGO / ABONO</button>
                 </div>`;
             }).join('');
-
-            list.innerHTML = html || '<p class="text-center text-slate-400 text-xs mt-10">NO HAY DEUDAS PENDIENTES</p>';
-            document.getElementById('total-global-deuda').innerText = `DEUDA TOTAL: $${totalCartera.toFixed(2)}`;
+            document.getElementById('lista-deudas').innerHTML = html || '<p class="text-center text-slate-400 mt-10">No hay cuentas pendientes</p>';
+            document.getElementById('cartera-total').innerText = `TOTAL: $${carT.toFixed(2)}`;
         }
 
-        function abonar(nombre) {
-            const abono = parseFloat(prompt(`Ingrese el monto del abono para ${nombre}:`));
-            if(!abono || abono <= 0) return;
-            
-            let db = JSON.parse(localStorage.getItem('alfa_clientes'));
-            db[nombre].deuda = Math.max(0, db[nombre].deuda - abono);
-            localStorage.setItem('alfa_clientes', JSON.stringify(db));
-            renderDebtList();
-        }
-
-        // --- BUSCADOR ---
-        function filtrarClientes() {
-            const input = document.getElementById('search-input').value.toUpperCase();
-            const resDiv = document.getElementById('search-results');
-            const db = JSON.parse(localStorage.getItem('alfa_clientes')) || {};
-            const matches = Object.keys(db).filter(n => n.includes(input));
-            
-            resDiv.innerHTML = matches.map(n => `<div onclick="setCli('${n}')" class="search-item">${n}</div>`).join('');
-            resDiv.style.display = (input && matches.length) ? 'block' : 'none';
-        }
-
-        function setCli(n) {
-            const db = JSON.parse(localStorage.getItem('alfa_clientes'));
-            document.getElementById('inp-cliente').value = n;
-            document.getElementById('inp-rif').value = db[n].rif;
-            document.getElementById('inp-direccion').value = db[n].dir;
-            document.getElementById('search-results').style.display = 'none';
+        function abonar(k) {
+            const a = parseFloat(prompt(`Registrar abono para ${k}:`));
+            if(!a || a <= 0) return;
+            let db = JSON.parse(localStorage.getItem('alfa_v3'));
+            db[k].deuda = Math.max(0, db[k].deuda - a);
+            localStorage.setItem('alfa_v3', JSON.stringify(db));
+            renderDebts();
         }
 
         function enviarUbicacion() {
             const btn = document.getElementById('txt-loc');
             btn.innerText = "LOCALIZANDO...";
             navigator.geolocation.getCurrentPosition(p => {
-                const link = `https://www.google.com/maps?q=${p.coords.latitude},${p.coords.longitude}`;
-                window.location.href = `https://wa.me/584124401702?text=📍 UBICACIÓN: ${link}`;
-                btn.innerText = "UBICACIÓN ENVIADA";
+                const lat = p.coords.latitude;
+                const lon = p.coords.longitude;
+                // ENLACE CORREGIDO PARA QUE NO DE ERROR 404
+                const link = `https://www.google.com/maps?q=${lat},${lon}`;
+                window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent('📍 MI UBICACIÓN DE ENTREGA: ' + link)}`;
+                btn.innerText = "ENVIAR MI UBICACIÓN";
             }, () => { alert("Active el GPS"); btn.innerText = "REINTENTAR"; });
         }
-
-        window.onload = () => renderView('hero');
+        
+        window.onload = () => render('hero');
     </script>
 </body>
 </html>
