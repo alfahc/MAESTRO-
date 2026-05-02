@@ -8,94 +8,58 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-        
-        :root {
-            --midnight: #121b2d;
-            --gold: #f4b41a;
-            --whatsapp: #25D366;
-        }
-
+        :root { --midnight: #121b2d; --gold: #f4b41a; --whatsapp: #25D366; }
         * { box-sizing: border-box; margin: 0; padding: 0; touch-action: pan-y; }
-
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: var(--midnight);
-            height: 100dvh;
-            width: 100vw;
-            overflow: hidden;
-            display: flex; flex-direction: column;
-            color: white;
+            height: 100dvh; width: 100vw; overflow: hidden;
+            display: flex; flex-direction: column; color: white;
         }
-
         .hero-gradient { background: radial-gradient(circle at center, #1e293b 0%, var(--midnight) 100%); }
-
         .sticky-nav {
-            background: var(--midnight);
-            border-bottom: 2px solid var(--gold);
-            padding: 10px 20px;
-            flex-shrink: 0;
-            display: flex; justify-content: space-between; align-items: center;
-            z-index: 50;
+            background: var(--midnight); border-bottom: 2px solid var(--gold);
+            padding: 10px 20px; flex-shrink: 0; display: flex; 
+            justify-content: space-between; align-items: center; z-index: 50;
         }
-
         .view-section { display: none; flex: 1; height: 100%; overflow: hidden; }
         .view-active { display: flex; flex-direction: column; }
-
         .static-container {
             flex: 1; display: flex; flex-direction: column;
-            background: #f8fafc; padding: 8px 12px;
-            overflow-y: auto;
+            background: #f8fafc; padding: 8px 12px; overflow-y: auto;
         }
-
         .product-card {
             background: white; display: flex; align-items: center; justify-content: space-between;
             padding: 10px 14px; border-radius: 12px; border: 1px solid #e2e8f0;
             margin-bottom: 6px; color: #334155;
         }
-
         .qty-btn {
             background: #f1f5f9; width: 30px; height: 30px;
             border-radius: 8px; display: flex; align-items: center; justify-content: center;
             font-weight: bold; border: 1px solid #e2e8f0;
         }
-
         .catalog-footer {
             background: var(--midnight); padding: 12px 20px;
             padding-bottom: calc(12px + env(safe-area-inset-bottom));
             flex-shrink: 0; border-top: 1px solid #1e293b;
         }
-
         .btn-whatsapp-direct {
             background-color: var(--whatsapp); color: white;
             padding: 14px; border-radius: 14px; font-weight: 800;
             display: flex; align-items: center; justify-content: center; gap: 10px;
             text-decoration: none; animation: pulse 2s infinite;
         }
-
         .btn-location-maps {
             background: linear-gradient(135deg, #4285F4 0%, #34A853 100%);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 50px;
-            font-weight: 800;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            font-size: 11px;
-            text-transform: uppercase;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            margin-bottom: 15px;
-            box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
-            transition: transform 0.2s;
+            color: white; padding: 12px 24px; border-radius: 50px; font-weight: 800;
+            display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+            font-size: 11px; text-transform: uppercase; border: 2px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 15px; box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
         }
-
         .input-data {
-            width: 100%; padding: 10px; margin-top: 8px;
-            border-radius: 10px; border: 1px solid #cbd5e1;
-            color: #1e293b; font-size: 12px; font-weight: 600;
+            width: 100%; padding: 10px; margin-top: 8px; border-radius: 10px;
+            border: 1px solid #cbd5e1; color: #1e293b; font-size: 12px; font-weight: 600;
         }
-
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
     </style>
 </head>
@@ -121,13 +85,11 @@
             <h2 class="text-xl font-extrabold mb-8 tracking-tight leading-[1.2] text-white/90">
                 Somos distribuidores de<br>cigarrillos nacionales de<br>muy alta calidad<br><span class="text-gold uppercase tracking-widest text-sm">MARCA BIGOTT</span>
             </h2>
-
             <button onclick="enviarUbicacion()" class="btn-location-maps" id="btn-loc">
                 <i class="fas fa-map-marker-alt"></i>
                 <span id="txt-loc">ENVIAR UBICACIÓN DE ENTREGA</span>
             </button>
             <p class="text-[8px] text-slate-400 mb-6 uppercase tracking-wider italic">* Active su GPS primero</p>
-
             <button onclick="toggleView('order')" class="bg-[#f4b41a] text-black px-8 py-4 rounded-2xl font-black text-sm w-full max-w-[280px] mx-auto shadow-xl active:scale-95 transition-all flex items-center justify-center gap-3">
                 VER LISTA DE PRECIOS <i class="fas fa-chevron-right"></i>
             </button>
@@ -142,13 +104,11 @@
         </div>
         <div class="static-container">
             <div id="order-list"></div>
-            
             <div class="mt-4 p-4 bg-white rounded-xl border border-gold/30 shadow-sm mb-6">
                 <h4 class="text-[10px] font-black text-slate-700 uppercase mb-2">Clientes Guardados</h4>
                 <select id="select-historial" onchange="autocompletarCliente()" class="input-data bg-gold/5 border-gold/20 mb-4">
                     <option value="">-- Buscar cliente --</option>
                 </select>
-                
                 <h4 class="text-[10px] font-black text-slate-700 uppercase mb-2">Datos de Entrega</h4>
                 <input id="inp-cliente" type="text" placeholder="Nombre o Negocio" class="input-data">
                 <input id="inp-rif" type="text" placeholder="RIF o Cédula" class="input-data">
@@ -182,42 +142,43 @@
 
         let cart = {};
 
-        // --- MANEJO DE NAVEGACIÓN Y HISTORIAL ---
-        function toggleView(view, pushState = true) {
-            document.getElementById('view-hero').classList.toggle('view-active', view === 'hero');
-            document.getElementById('view-order').classList.toggle('view-active', view === 'order');
-            document.getElementById('back-btn').classList.toggle('hidden', view === 'hero');
-
-            if(view === 'order') {
-                renderOrderList();
-                cargarListaClientes();
-                // Si vamos a la pantalla de pedido, agregamos un estado al historial
-                if(pushState) history.pushState({view: 'order'}, '');
+        // --- NAVEGACIÓN BLINDADA ---
+        function toggleView(view) {
+            if (view === 'order') {
+                // Forzamos un estado en el historial para que el botón "atrás" tenga a donde ir
+                window.history.pushState({ screen: 'order' }, "");
+                showOrderScreen();
             } else {
-                // Si volvemos al hero, nos aseguramos que el historial esté limpio
-                if(pushState && history.state?.view === 'order') history.back();
+                showHeroScreen();
             }
         }
 
-        // Función para el botón "Volver" de la interfaz
-        function goBack() { 
-            if(history.state?.view === 'order') {
-                history.back(); 
-            } else {
-                toggleView('hero', false);
-            }
+        function showOrderScreen() {
+            document.getElementById('view-hero').style.display = 'none';
+            document.getElementById('view-order').style.display = 'flex';
+            document.getElementById('back-btn').classList.remove('hidden');
+            renderOrderList();
+            cargarListaClientes();
         }
 
-        // Detectar el botón físico "Atrás" del teléfono
-        window.onpopstate = function(event) {
-            if (event.state && event.state.view === 'order') {
-                toggleView('order', false);
-            } else {
-                toggleView('hero', false);
-            }
-        };
+        function showHeroScreen() {
+            document.getElementById('view-hero').style.display = 'flex';
+            document.getElementById('view-order').style.display = 'none';
+            document.getElementById('back-btn').classList.add('hidden');
+        }
 
-        // --- RESTO DE FUNCIONES ---
+        function goBack() {
+            // Esto simula presionar el botón atrás del teléfono
+            window.history.back();
+        }
+
+        // El "Truco Maestro": Detectar el cambio de historial
+        window.addEventListener('popstate', function(event) {
+            // Si el usuario da atrás y no hay estado, significa que regresó al inicio
+            showHeroScreen();
+        });
+
+        // --- FUNCIONES DE PRODUCTOS ---
         function renderOrderList() {
             const container = document.getElementById('order-list');
             container.innerHTML = products.filter(p => p.stock).map(p => `
@@ -237,109 +198,81 @@
         }
 
         function updateQty(name, change) {
-            if (!cart[name]) cart[name] = 0;
-            cart[name] = Math.max(0, cart[name] + change);
+            cart[name] = Math.max(0, (cart[name] || 0) + change);
             renderOrderList();
         }
 
         function calculateTotal() {
             let total = 0;
-            products.forEach(p => {
-                if (cart[p.name]) total += p.price * cart[p.name];
-            });
+            products.forEach(p => { if (cart[p.name]) total += p.price * cart[p.name]; });
             document.getElementById('grand-total').innerText = `$${total.toFixed(2)}`;
             return total;
         }
 
+        // --- CLIENTES ---
         function cargarListaClientes() {
             const db = JSON.parse(localStorage.getItem('alfa_clientes')) || {};
             const select = document.getElementById('select-historial');
             select.innerHTML = '<option value="">-- Buscar cliente --</option>';
-            Object.keys(db).sort().forEach(nombre => {
+            Object.keys(db).sort().forEach(n => {
                 const opt = document.createElement('option');
-                opt.value = nombre; opt.textContent = nombre;
+                opt.value = n; opt.textContent = n;
                 select.appendChild(opt);
             });
         }
 
         function autocompletarCliente() {
-            const nombre = document.getElementById('select-historial').value;
-            if(!nombre) return;
+            const n = document.getElementById('select-historial').value;
+            if(!n) return;
             const db = JSON.parse(localStorage.getItem('alfa_clientes')) || {};
-            const d = db[nombre];
-            document.getElementById('inp-cliente').value = nombre;
+            const d = db[n];
+            document.getElementById('inp-cliente').value = n;
             document.getElementById('inp-rif').value = d.rif || "";
             document.getElementById('inp-direccion').value = d.dir || "";
         }
 
         function sendWhatsAppOrder() {
-            const nomInput = document.getElementById('inp-cliente');
-            const rifInput = document.getElementById('inp-rif');
-            const dirInput = document.getElementById('inp-direccion');
-            
-            const nom = nomInput.value.trim();
-            const rif = rifInput.value.trim();
-            const dir = dirInput.value.trim();
-            
+            const nI = document.getElementById('inp-cliente');
+            const rI = document.getElementById('inp-rif');
+            const dI = document.getElementById('inp-direccion');
+            const n = nI.value.trim();
+            const r = rI.value.trim();
+            const d = dI.value.trim();
             let items = "";
             let total = calculateTotal();
+            products.forEach(p => { if (cart[p.name] > 0) items += `• ${cart[p.name]}x ${p.name}\n`; });
 
-            products.forEach(p => {
-                if (cart[p.name] > 0) items += `• ${cart[p.name]}x ${p.name}\n`;
-            });
-
-            if (!items || !nom) return alert("Agregue productos y nombre del cliente");
+            if (!items || !n) return alert("Faltan datos");
 
             let db = JSON.parse(localStorage.getItem('alfa_clientes')) || {};
-            db[nom.toUpperCase()] = { rif: rif, dir: dir };
+            db[n.toUpperCase()] = { rif: r, dir: d };
             localStorage.setItem('alfa_clientes', JSON.stringify(db));
 
-            let message = `*ALFA HC - PEDIDO*\n\n*CLIENTE:* ${nom}\n*RIF:* ${rif}\n*DIR:* ${dir}\n\n*PRODUCTOS:*\n${items}\n💰 *TOTAL: $${total.toFixed(2)}*`;
-            
-            window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent(message)}`;
+            let msg = `*ALFA HC - PEDIDO*\n\n*CLIENTE:* ${n}\n*RIF:* ${r}\n*DIR:* ${d}\n\n*PRODUCTOS:*\n${items}\n💰 *TOTAL: $${total.toFixed(2)}*`;
+            window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent(msg)}`;
 
-            // Limpieza
-            cart = {};
-            nomInput.value = "";
-            rifInput.value = "";
-            dirInput.value = "";
+            cart = {}; nI.value = ""; rI.value = ""; dI.value = "";
             document.getElementById('select-historial').value = "";
             renderOrderList();
         }
 
         function enviarUbicacion() {
-            const btn = document.getElementById('btn-loc');
             const txt = document.getElementById('txt-loc');
             txt.innerText = "LOCALIZANDO...";
-            btn.style.opacity = "0.7";
-            
-            navigator.geolocation.getCurrentPosition(
-                (pos) => {
-                    const lat = pos.coords.latitude;
-                    const lon = pos.coords.longitude;
-                    const mapLink = `http://googleusercontent.com/maps.google.com/6{lat},${lon}`;
-                    const msg = `📍 *UBICACIÓN DE ENTREGA:* \n${mapLink}`;
-                    window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent(msg)}`;
-                    setTimeout(() => {
-                        txt.innerText = "ENVIAR UBICACIÓN DE ENTREGA";
-                        btn.style.opacity = "1";
-                    }, 2000);
-                },
-                (err) => { 
-                    alert("Active su GPS."); 
-                    txt.innerText = "ENVIAR UBICACIÓN DE ENTREGA";
-                    btn.style.opacity = "1";
-                },
-                { enableHighAccuracy: true }
-            );
+            navigator.geolocation.getCurrentPosition((pos) => {
+                const lat = pos.coords.latitude;
+                const lon = pos.coords.longitude;
+                const mapLink = `http://googleusercontent.com/maps.google.com/7{lat},${lon}`;
+                window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent('📍 Ubicación: ' + mapLink)}`;
+                setTimeout(() => { txt.innerText = "ENVIAR UBICACIÓN DE ENTREGA"; }, 2000);
+            }, (err) => { alert("Active GPS"); txt.innerText = "ENVIAR UBICACIÓN DE ENTREGA"; });
         }
 
-        // AL CARGAR: Forzar siempre Pantalla 1 y limpiar historial residual
+        // ASEGURAR SIEMPRE PANTALLA 1 AL INICIO
         window.onload = () => {
-            if (window.history.state) {
-                history.replaceState(null, ''); 
-            }
-            toggleView('hero', false);
+            // Limpia cualquier rastro del historial al cargar de cero
+            window.history.replaceState(null, "");
+            showHeroScreen();
         };
     </script>
 </body>
