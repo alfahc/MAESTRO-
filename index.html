@@ -39,7 +39,7 @@
             <h2 class="text-xl font-extrabold mb-8 tracking-tight leading-[1.2]">Cigarrillos Nacionales<br><span class="text-gold uppercase tracking-widest text-sm">MARCA BIGOTT</span></h2>
             
             <button onclick="enviarUbicacion()" class="btn-location-hero">
-                <i class="fas fa-map-marker-alt"></i> <span id="txt-loc">UBICACIÓN DE ENTREGA</span>
+                <i class="fas fa-map-marker-alt"></i> <span id="txt-loc">ENVIAR UBICACIÓN DE ENTREGA</span>
             </button>
             
             <p class="text-[8px] text-slate-400 mb-6 uppercase tracking-wider italic">* Recuerde activar su GPS primero</p>
@@ -134,26 +134,20 @@
             const btnText = document.getElementById('txt-loc');
             btnText.innerText = "LOCALIZANDO...";
             
-            // navigator.geolocation con alta precisión para tiempo real
             navigator.geolocation.getCurrentPosition(
                 (pos) => {
                     const lat = pos.coords.latitude;
                     const lon = pos.coords.longitude;
                     const mapLink = `https://www.google.com/maps?q=${lat},${lon}`;
-                    // MENSAJE CON TEXTO SOLICITADO
                     const msg = `📍 *UBICACIÓN DE ENTREGA:* \n${mapLink}`;
                     window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent(msg)}`;
-                    btnText.innerText = "UBICACIÓN DE ENTREGA";
+                    btnText.innerText = "ENVIAR UBICACIÓN DE ENTREGA";
                 },
                 () => { 
                     alert("Active su GPS y permita el acceso para enviar la ubicación exacta."); 
-                    btnText.innerText = "UBICACIÓN DE ENTREGA"; 
+                    btnText.innerText = "ENVIAR UBICACIÓN DE ENTREGA"; 
                 },
-                { 
-                    enableHighAccuracy: true, // FORZA GPS REAL
-                    timeout: 7000, 
-                    maximumAge: 0 
-                }
+                { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 }
             );
         }
         window.onload = () => toggleView('hero');
