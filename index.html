@@ -72,14 +72,29 @@
             text-decoration: none; animation: pulse 2s infinite;
         }
 
-        /* Botón azul solicitado */
-        .btn-location-blue {
-            background: rgba(59, 130, 246, 0.1);
-            color: #60a5fa;
-            padding: 12px 24px; border-radius: 50px; font-weight: 700;
-            display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-            font-size: 11px; text-transform: uppercase; border: 1px solid rgba(59, 130, 246, 0.3);
+        /* DISEÑO DE BOTÓN ESTILO GOOGLE MAPS */
+        .btn-location-maps {
+            background: linear-gradient(135deg, #4285F4 0%, #34A853 100%);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 11px;
+            text-transform: uppercase;
+            border: 2px solid rgba(255, 255, 255, 0.2);
             margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
+            transition: transform 0.2s;
+        }
+        .btn-location-maps:active { transform: scale(0.95); }
+        .btn-location-maps i {
+            color: #EA4335; /* Pin Rojo */
+            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
+            font-size: 1.2rem;
         }
 
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
@@ -108,7 +123,7 @@
                 Somos distribuidores de<br>cigarrillos nacionales de<br>muy alta calidad<br><span class="text-gold uppercase tracking-widest text-sm">MARCA BIGOTT</span>
             </h2>
 
-            <button onclick="enviarUbicacion()" class="btn-location-blue">
+            <button onclick="enviarUbicacion()" class="btn-location-maps">
                 <i class="fas fa-map-marker-alt"></i>
                 <span id="txt-loc">ENVIAR UBICACIÓN DE ENTREGA</span>
             </button>
@@ -146,7 +161,6 @@
             { name: 'LUCKY NOVA', price: 30.60, stock: true },
             { name: 'LUCKY RED ORIGINAL', price: 28.00, stock: true },
             { name: 'PALL MALL', price: 25.60, stock: true },
-            { name: 'UNIVERSAL', price: 0, stock: false },
             { name: 'VICEROY', price: 16.50, stock: true },
             { name: 'CONSUL', price: 14.00, stock: true },
             { name: 'LUCKY COSMIC', price: 30.60, stock: true },
@@ -209,13 +223,12 @@
                 }
             });
 
-            if (!items) return alert("Agrega al menos un producto");
+            if (!items) return alert("Agregue al menos un producto");
 
             message += items + `\n💰 *MONTO DE PEDIDO: $${total.toFixed(2)}*`;
             
             window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent(message)}`;
 
-            // Limpieza inmediata del carrito
             cart = {};
             renderOrderList();
         }
@@ -228,7 +241,6 @@
                 (pos) => {
                     const lat = pos.coords.latitude;
                     const lon = pos.coords.longitude;
-                    // Link de Google Maps directo con coordenadas actuales
                     const mapLink = `https://www.google.com/maps?q=${lat},${lon}`;
                     const msg = `📍 *UBICACIÓN DE ENTREGA:* \n${mapLink}`;
                     
@@ -236,13 +248,13 @@
                     btnText.innerText = "ENVIAR UBICACIÓN DE ENTREGA";
                 },
                 (err) => { 
-                    alert("Error: Active su GPS y permita el acceso para obtener la ubicación en tiempo actual."); 
+                    alert("Active su GPS y permita el acceso para enviar la ubicación."); 
                     btnText.innerText = "ENVIAR UBICACIÓN DE ENTREGA"; 
                 },
                 { 
-                    enableHighAccuracy: true, // Fuerza el uso de GPS satelital (Tiempo real)
-                    timeout: 10000,           // Espera hasta 10 segundos para fijar posición
-                    maximumAge: 0             // No acepta ubicaciones viejas guardadas
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 0
                 }
             );
         }
