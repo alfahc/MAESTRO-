@@ -2,264 +2,130 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Alfa HC | Catálogo Maestro Oficial</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alfa HC - Sistema de Despacho</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-        
-        :root {
-            --midnight: #121b2d;
-            --gold: #f4b41a;
-            --whatsapp: #25D366;
+        /* Estilos para que la nota de entrega se vea bien al imprimir */
+        @media print {
+            .no-print { display: none !important; }
+            #ticket { display: block !important; width: 100%; }
+            body { background: white; p: 0; }
         }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; touch-action: pan-y; }
-
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--midnight);
-            height: 100dvh;
-            width: 100vw;
-            overflow: hidden;
-            display: flex; flex-direction: column;
-            color: white;
-        }
-
-        .hero-gradient { background: radial-gradient(circle at center, #1e293b 0%, var(--midnight) 100%); }
-
-        .sticky-nav {
-            background: var(--midnight);
-            border-bottom: 2px solid var(--gold);
-            padding: 10px 20px;
-            flex-shrink: 0;
-            display: flex; justify-content: space-between; align-items: center;
-            z-index: 50;
-        }
-
-        .view-section { display: none; flex: 1; height: 100%; overflow: hidden; }
-        .view-active { display: flex; flex-direction: column; }
-
-        .static-container {
-            flex: 1; display: flex; flex-direction: column;
-            background: #f8fafc; padding: 8px 12px;
-            overflow-y: auto;
-        }
-
-        .product-card {
-            background: white; display: flex; align-items: center; justify-content: space-between;
-            padding: 10px 14px; border-radius: 12px; border: 1px solid #e2e8f0;
-            margin-bottom: 6px; color: #334155;
-        }
-
-        .qty-btn {
-            background: #f1f5f9; width: 30px; height: 30px;
-            border-radius: 8px; display: flex; align-items: center; justify-content: center;
-            font-weight: bold; border: 1px solid #e2e8f0;
-        }
-
-        .catalog-footer {
-            background: var(--midnight); padding: 12px 20px;
-            padding-bottom: calc(12px + env(safe-area-inset-bottom));
-            flex-shrink: 0; border-top: 1px solid #1e293b;
-        }
-
-        .btn-whatsapp-direct {
-            background-color: var(--whatsapp); color: white;
-            padding: 14px; border-radius: 14px; font-weight: 800;
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            text-decoration: none; animation: pulse 2s infinite;
-        }
-
-        /* DISEÑO DE BOTÓN ESTILO GOOGLE MAPS */
-        .btn-location-maps {
-            background: linear-gradient(135deg, #4285F4 0%, #34A853 100%);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 50px;
-            font-weight: 800;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            font-size: 11px;
-            text-transform: uppercase;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            margin-bottom: 15px;
-            box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
-            transition: transform 0.2s;
-        }
-        .btn-location-maps:active { transform: scale(0.95); }
-        .btn-location-maps i {
-            color: #EA4335; /* Pin Rojo */
-            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
-            font-size: 1.2rem;
-        }
-
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+        #ticket { font-family: 'Courier New', Courier, monospace; }
     </style>
 </head>
-<body>
+<body class="bg-gray-100 p-4">
 
-    <nav class="sticky-nav">
-        <div class="flex flex-col">
-            <h1 class="text-lg font-black italic leading-none uppercase tracking-tighter text-gold">ALFA HC</h1>
-            <p class="text-[6px] uppercase tracking-[0.2em] text-slate-400 font-bold mt-1">Distribuidora • RIF: J-411261297</p>
+    <div id="app" class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6 no-print">
+        <h1 class="text-2xl font-bold text-blue-800 mb-2 text-center">ALFA HC</h1>
+        <p class="text-gray-500 text-center text-xs mb-6 uppercase tracking-widest">Panel de Despacho</p>
+        
+        <div class="mb-6 space-y-3">
+            <h2 class="font-bold text-gray-700 border-b pb-1">DATOS DEL CLIENTE</h2>
+            <input id="cliente" type="text" placeholder="Nombre del Cliente" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+            <input id="rif" type="text" placeholder="RIF o Cédula" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+            <input id="direccion" type="text" placeholder="Dirección de Entrega" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
         </div>
-        <button onclick="goBack()" id="back-btn" class="hidden text-white text-[9px] font-bold uppercase border border-slate-700 px-3 py-1.5 rounded-lg bg-slate-800">
-             Volver
+
+        <div class="mb-6 space-y-3">
+            <h2 class="font-bold text-gray-700 border-b pb-1">PEDIDO</h2>
+            <textarea id="pedido" placeholder="Ej: 2 Bultos Harina, 1 Caja Aceite..." class="w-full h-32 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+            <div class="relative">
+                <span class="absolute left-3 top-3 text-gray-500">$</span>
+                <input id="total" type="number" placeholder="Monto Total" class="w-full p-3 pl-8 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
+        </div>
+
+        <button onclick="procesarVenta()" id="btnEnviar" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-blue-700 active:transform active:scale-95 transition-all">
+            REGISTRAR Y GENERAR NOTA
         </button>
-    </nav>
+        
+        <p id="mensaje" class="text-center mt-4 text-green-600 font-bold hidden">✓ Guardado en Excel correctamente</p>
+    </div>
 
-    <section id="view-hero" class="view-section view-active hero-gradient text-white items-center justify-between px-10 py-12 text-center">
-        <div class="mt-4">
-             <div class="inline-block border border-gold/40 bg-gold/10 rounded-full px-5 py-1.5">
-                <span class="text-[9px] font-bold tracking-widest uppercase text-gold">Catálogo Digital</span>
-            </div>
+    <div id="ticket" class="hidden bg-white p-6 w-full max-w-[300px] mx-auto text-sm">
+        <center>
+            <h2 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 0;">ALFA HC</h2>
+            <p style="margin-top: 0;">Nota de Entrega</p>
+            <p>--------------------------------</p>
+        </center>
+        <div style="margin-top: 15px; line-height: 1.5;">
+            <p><strong>FECHA:</strong> <span id="t-fecha"></span></p>
+            <p><strong>CLIENTE:</strong> <span id="t-cliente"></span></p>
+            <p><strong>RIF:</strong> <span id="t-rif"></span></p>
+            <p><strong>DIR:</strong> <span id="t-direccion"></span></p>
+            <p>--------------------------------</p>
+            <p><strong>DETALLE DEL PEDIDO:</strong></p>
+            <p id="t-pedido" style="white-space: pre-line; margin-top: 5px;"></p>
+            <p>--------------------------------</p>
+            <p style="font-size: 1.2rem; font-weight: bold; text-align: right;">TOTAL: $<span id="t-total"></span></p>
         </div>
-        <div class="w-full">
-            <h2 class="text-xl font-extrabold mb-8 tracking-tight leading-[1.2] text-white/90">
-                Somos distribuidores de<br>cigarrillos nacionales de<br>muy alta calidad<br><span class="text-gold uppercase tracking-widest text-sm">MARCA BIGOTT</span>
-            </h2>
-
-            <button onclick="enviarUbicacion()" class="btn-location-maps">
-                <i class="fas fa-map-marker-alt"></i>
-                <span id="txt-loc">ENVIAR UBICACIÓN DE ENTREGA</span>
-            </button>
-            <p class="text-[8px] text-slate-400 mb-6 uppercase tracking-wider italic">* Active su GPS primero</p>
-
-            <button onclick="toggleView('order')" class="bg-[#f4b41a] text-black px-8 py-4 rounded-2xl font-black text-sm w-full max-w-[280px] mx-auto shadow-xl active:scale-95 transition-all flex items-center justify-center gap-3">
-                VER LISTA DE PRECIOS <i class="fas fa-chevron-right"></i>
-            </button>
-        </div>
-        <p class="text-slate-500 text-[8px] font-bold uppercase tracking-[0.3em]">Calidad • Puntualidad • Servicio</p>
-    </section>
-
-    <section id="view-order" class="view-section">
-        <div class="bg-emerald-50 px-5 py-2 border-b border-emerald-100 flex justify-between items-center">
-            <h3 class="text-[9px] font-black text-emerald-800 uppercase tracking-widest">Armar Pedido</h3>
-            <span class="text-[8px] font-bold text-emerald-600 uppercase">Selecciona cantidades</span>
-        </div>
-        <div class="static-container" id="order-list"></div>
-        <footer class="catalog-footer">
-            <div class="flex justify-between items-center mb-4 px-2">
-                <span class="text-white/60 text-[10px] font-bold uppercase tracking-widest">MONTO DE PEDIDO:</span>
-                <span id="grand-total" class="text-gold text-2xl font-black">$0.00</span>
-            </div>
-            <button onclick="sendWhatsAppOrder()" class="btn-whatsapp-direct w-full">
-                <i class="fab fa-whatsapp text-2xl"></i>
-                <span>ENVIAR PEDIDO POR WHATSAPP</span>
-            </button>
-        </footer>
-    </section>
+        <br><br>
+        <center>
+            <p>_______________________</p>
+            <p>Recibido Conforme</p>
+            <br>
+            <p style="font-size: 0.7rem;">Gracias por confiar en ALFA HC</p>
+        </center>
+    </div>
 
     <script>
-        const products = [
-            { name: 'BELMONT', price: 25.60, stock: true },
-            { name: 'BELMONT MEDIA CAJA', price: 15.40, stock: true },
-            { name: 'LUCKY NOVA', price: 30.60, stock: true },
-            { name: 'LUCKY RED ORIGINAL', price: 28.00, stock: true },
-            { name: 'PALL MALL', price: 25.60, stock: true },
-            { name: 'VICEROY', price: 16.50, stock: true },
-            { name: 'CONSUL', price: 14.00, stock: true },
-            { name: 'LUCKY COSMIC', price: 30.60, stock: true },
-            { name: 'ENCENDEDOR BIC', price: 1.50, stock: true }
-        ];
+        // TU ENLACE DE GOOGLE CONFIGURADO
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbymaqrxlIUCOdz51HPIkpjLRa-y3l8pViPEDsA0fWB7qVKI3OQQ1WcQA-u5vg972sI/exec";
 
-        let cart = {};
-
-        function toggleView(view) {
-            document.getElementById('view-hero').classList.toggle('view-active', view === 'hero');
-            document.getElementById('view-order').classList.toggle('view-active', view === 'order');
-            document.getElementById('back-btn').classList.toggle('hidden', view === 'hero');
-            if(view === 'order') renderOrderList();
-        }
-
-        function goBack() { toggleView('hero'); }
-
-        function renderOrderList() {
-            const container = document.getElementById('order-list');
-            container.innerHTML = products.filter(p => p.stock).map(p => `
-                <div class="product-card">
-                    <div class="flex flex-col flex-1">
-                        <span class="text-[10px] font-black uppercase text-slate-700">${p.name}</span>
-                        <span class="text-[9px] font-bold text-slate-400">$${p.price.toFixed(2)}</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <button onclick="updateQty('${p.name}', -1)" class="qty-btn text-slate-400">-</button>
-                        <span class="w-6 text-center font-black text-slate-800">${cart[p.name] || 0}</span>
-                        <button onclick="updateQty('${p.name}', 1)" class="qty-btn text-slate-900 font-black">+</button>
-                    </div>
-                </div>
-            `).join('');
-            calculateTotal();
-        }
-
-        function updateQty(name, change) {
-            if (!cart[name]) cart[name] = 0;
-            cart[name] = Math.max(0, cart[name] + change);
-            renderOrderList();
-        }
-
-        function calculateTotal() {
-            let total = 0;
-            products.forEach(p => {
-                if (cart[p.name]) total += p.price * cart[p.name];
-            });
-            document.getElementById('grand-total').innerText = `$${total.toFixed(2)}`;
-        }
-
-        function sendWhatsAppOrder() {
-            let message = "Hola mi pedido es:\n\n";
-            let items = "";
-            let total = 0;
-
-            products.forEach(p => {
-                if (cart[p.name] > 0) {
-                    let sub = p.price * cart[p.name];
-                    items += `• ${cart[p.name]}x ${p.name} ($${sub.toFixed(2)})\n`;
-                    total += sub;
-                }
-            });
-
-            if (!items) return alert("Agregue al menos un producto");
-
-            message += items + `\n💰 *MONTO DE PEDIDO: $${total.toFixed(2)}*`;
+        async function procesarVenta() {
+            const btn = document.getElementById('btnEnviar');
+            const msg = document.getElementById('mensaje');
             
-            window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent(message)}`;
+            const datos = {
+                cliente: document.getElementById('cliente').value,
+                rif: document.getElementById('rif').value,
+                direccion: document.getElementById('direccion').value,
+                pedido: document.getElementById('pedido').value,
+                total: document.getElementById('total').value
+            };
 
-            cart = {};
-            renderOrderList();
+            // Validación simple
+            if(!datos.cliente || !datos.total) {
+                return alert("Por favor coloca al menos el nombre del cliente y el total.");
+            }
+
+            btn.disabled = true;
+            btn.innerText = "Guardando en Excel...";
+
+            try {
+                // 1. Enviar datos a Google Sheets (el puente que creaste)
+                await fetch(WEB_APP_URL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify(datos)
+                });
+
+                // 2. Llenar el formato de la Nota de Entrega
+                document.getElementById('t-fecha').innerText = new Date().toLocaleString();
+                document.getElementById('t-cliente').innerText = datos.cliente.toUpperCase();
+                document.getElementById('t-rif').innerText = datos.rif;
+                document.getElementById('t-direccion').innerText = datos.direccion;
+                document.getElementById('t-pedido').innerText = datos.pedido;
+                document.getElementById('t-total').innerText = datos.total;
+
+                msg.classList.remove('hidden');
+                
+                // 3. Abrir ventana de impresión (para impresora térmica o PDF)
+                setTimeout(() => {
+                    window.print();
+                    btn.disabled = false;
+                    btn.innerText = "REGISTRAR Y GENERAR NOTA";
+                }, 500);
+
+            } catch (error) {
+                alert("Hubo un error al guardar. Revisa tu conexión.");
+                btn.disabled = false;
+                btn.innerText = "REINTENTAR";
+            }
         }
-
-        function enviarUbicacion() {
-            const btnText = document.getElementById('txt-loc');
-            btnText.innerText = "UBICANDO EN TIEMPO ACTUAL...";
-            
-            navigator.geolocation.getCurrentPosition(
-                (pos) => {
-                    const lat = pos.coords.latitude;
-                    const lon = pos.coords.longitude;
-                    const mapLink = `https://www.google.com/maps?q=${lat},${lon}`;
-                    const msg = `📍 *UBICACIÓN DE ENTREGA:* \n${mapLink}`;
-                    
-                    window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent(msg)}`;
-                    btnText.innerText = "ENVIAR UBICACIÓN DE ENTREGA";
-                },
-                (err) => { 
-                    alert("Active su GPS y permita el acceso para enviar la ubicación."); 
-                    btnText.innerText = "ENVIAR UBICACIÓN DE ENTREGA"; 
-                },
-                { 
-                    enableHighAccuracy: true,
-                    timeout: 10000,
-                    maximumAge: 0
-                }
-            );
-        }
-
-        window.onload = () => toggleView('hero');
     </script>
 </body>
 </html>
