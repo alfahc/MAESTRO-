@@ -3,127 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alfa HC - Sistema de Despacho</title>
+    <title>Alfa HC - Pedidos</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Estilos para que la nota de entrega se vea bien al imprimir */
-        @media print {
-            .no-print { display: none !important; }
-            #ticket { display: block !important; width: 100%; }
-            body { background: white; p: 0; }
-        }
-        #ticket { font-family: 'Courier New', Courier, monospace; }
+        .product-card img { height: 120px; object-fit: cover; width: 100%; border-radius: 8px; }
     </style>
 </head>
-<body class="bg-gray-100 p-4">
+<body class="bg-gray-100 pb-10">
 
-    <div id="app" class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6 no-print">
-        <h1 class="text-2xl font-bold text-blue-800 mb-2 text-center">ALFA HC</h1>
-        <p class="text-gray-500 text-center text-xs mb-6 uppercase tracking-widest">Panel de Despacho</p>
-        
-        <div class="mb-6 space-y-3">
-            <h2 class="font-bold text-gray-700 border-b pb-1">DATOS DEL CLIENTE</h2>
-            <input id="cliente" type="text" placeholder="Nombre del Cliente" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-            <input id="rif" type="text" placeholder="RIF o Cédula" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-            <input id="direccion" type="text" placeholder="Dirección de Entrega" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-        </div>
+    <div class="max-w-md mx-auto p-4">
+        <header class="text-center py-4">
+            <h1 class="text-3xl font-extrabold text-blue-900 italic">ALFA HC</h1>
+            <p class="text-gray-600 text-sm">Distribuidora de Alimentos</p>
+        </header>
 
-        <div class="mb-6 space-y-3">
-            <h2 class="font-bold text-gray-700 border-b pb-1">PEDIDO</h2>
-            <textarea id="pedido" placeholder="Ej: 2 Bultos Harina, 1 Caja Aceite..." class="w-full h-32 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
-            <div class="relative">
-                <span class="absolute left-3 top-3 text-gray-500">$</span>
-                <input id="total" type="number" placeholder="Monto Total" class="w-full p-3 pl-8 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+        <div class="grid grid-cols-2 gap-3 mb-6">
+            <div class="bg-white p-2 rounded-lg shadow text-center">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_fE4Q6x0mC6Z-zZ9H8uK_GvYmI6KzG8f7Xg&s" alt="Harina">
+                <h3 class="text-sm font-bold mt-1">Harina Pan</h3>
+                <p class="text-blue-600 font-bold">$1.15</p>
+                <button onclick="agregar('Harina Pan', 1.15)" class="bg-blue-600 text-white text-xs px-3 py-1 rounded-full mt-1">+ Añadir</button>
+            </div>
+            <div class="bg-white p-2 rounded-lg shadow text-center">
+                <img src="https://http2.mlstatic.com/D_NQ_NP_603816-MLV43354385223_092020-O.jpg" alt="Aceite">
+                <h3 class="text-sm font-bold mt-1">Aceite 1L</h3>
+                <p class="text-blue-600 font-bold">$2.40</p>
+                <button onclick="agregar('Aceite 1L', 2.40)" class="bg-blue-600 text-white text-xs px-3 py-1 rounded-full mt-1">+ Añadir</button>
             </div>
         </div>
 
-        <button onclick="procesarVenta()" id="btnEnviar" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-blue-700 active:transform active:scale-95 transition-all">
-            REGISTRAR Y GENERAR NOTA
-        </button>
-        
-        <p id="mensaje" class="text-center mt-4 text-green-600 font-bold hidden">✓ Guardado en Excel correctamente</p>
-    </div>
+        <div class="bg-white p-5 rounded-2xl shadow-xl">
+            <h2 class="font-bold border-b mb-3">TU PEDIDO</h2>
+            <div id="carrito" class="text-sm mb-3 space-y-1">
+                <p class="text-gray-400">No hay productos...</p>
+            </div>
+            <div class="text-right font-bold text-lg mb-5 text-blue-800">Total: $<span id="total">0.00</span></div>
 
-    <div id="ticket" class="hidden bg-white p-6 w-full max-w-[300px] mx-auto text-sm">
-        <center>
-            <h2 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 0;">ALFA HC</h2>
-            <p style="margin-top: 0;">Nota de Entrega</p>
-            <p>--------------------------------</p>
-        </center>
-        <div style="margin-top: 15px; line-height: 1.5;">
-            <p><strong>FECHA:</strong> <span id="t-fecha"></span></p>
-            <p><strong>CLIENTE:</strong> <span id="t-cliente"></span></p>
-            <p><strong>RIF:</strong> <span id="t-rif"></span></p>
-            <p><strong>DIR:</strong> <span id="t-direccion"></span></p>
-            <p>--------------------------------</p>
-            <p><strong>DETALLE DEL PEDIDO:</strong></p>
-            <p id="t-pedido" style="white-space: pre-line; margin-top: 5px;"></p>
-            <p>--------------------------------</p>
-            <p style="font-size: 1.2rem; font-weight: bold; text-align: right;">TOTAL: $<span id="t-total"></span></p>
+            <h2 class="font-bold border-b mb-3 text-xs uppercase text-gray-500">Datos de Entrega</h2>
+            <div class="space-y-2">
+                <input id="cliente" type="text" placeholder="Tu Nombre" class="w-full p-2 border rounded-md text-sm">
+                <input id="rif" type="text" placeholder="Cédula / RIF" class="w-full p-2 border rounded-md text-sm">
+                <input id="direccion" type="text" placeholder="Dirección Exacta" class="w-full p-2 border rounded-md text-sm">
+            </div>
+
+            <button onclick="enviar()" id="btn" class="w-full bg-green-600 text-white font-bold py-3 rounded-xl mt-6 shadow-lg hover:bg-green-700 transition">
+                CONFIRMAR PEDIDO ✅
+            </button>
         </div>
-        <br><br>
-        <center>
-            <p>_______________________</p>
-            <p>Recibido Conforme</p>
-            <br>
-            <p style="font-size: 0.7rem;">Gracias por confiar en ALFA HC</p>
-        </center>
     </div>
 
     <script>
-        // TU ENLACE DE GOOGLE CONFIGURADO
+        // TU URL DE GOOGLE (YA LA PUSE POR TI)
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbymaqrxlIUCOdz51HPIkpjLRa-y3l8pViPEDsA0fWB7qVKI3OQQ1WcQA-u5vg972sI/exec";
+        
+        let items = [];
+        let suma = 0;
 
-        async function procesarVenta() {
-            const btn = document.getElementById('btnEnviar');
-            const msg = document.getElementById('mensaje');
-            
-            const datos = {
-                cliente: document.getElementById('cliente').value,
-                rif: document.getElementById('rif').value,
-                direccion: document.getElementById('direccion').value,
-                pedido: document.getElementById('pedido').value,
-                total: document.getElementById('total').value
-            };
+        function agregar(p, pr) {
+            items.push(p);
+            suma += pr;
+            document.getElementById('carrito').innerHTML = items.map(i => `<div>• ${i}</div>`).join('');
+            document.getElementById('total').innerText = suma.toFixed(2);
+        }
 
-            // Validación simple
-            if(!datos.cliente || !datos.total) {
-                return alert("Por favor coloca al menos el nombre del cliente y el total.");
-            }
+        async function enviar() {
+            const nom = document.getElementById('cliente').value;
+            const rif = document.getElementById('rif').value;
+            const dir = document.getElementById('direccion').value;
 
+            if(!nom || items.length === 0) return alert("Llena tu nombre y elige productos");
+
+            const btn = document.getElementById('btn');
             btn.disabled = true;
-            btn.innerText = "Guardando en Excel...";
+            btn.innerText = "Registrando...";
+
+            const pedidoTxt = items.join(", ");
 
             try {
-                // 1. Enviar datos a Google Sheets (el puente que creaste)
+                // 1. Guardar en tu Google Sheets automáticamente
                 await fetch(WEB_APP_URL, {
                     method: "POST",
                     mode: "no-cors",
                     headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify(datos)
+                    body: JSON.stringify({
+                        cliente: nom,
+                        rif: rif,
+                        direccion: dir,
+                        pedido: pedidoTxt,
+                        total: suma
+                    })
                 });
 
-                // 2. Llenar el formato de la Nota de Entrega
-                document.getElementById('t-fecha').innerText = new Date().toLocaleString();
-                document.getElementById('t-cliente').innerText = datos.cliente.toUpperCase();
-                document.getElementById('t-rif').innerText = datos.rif;
-                document.getElementById('t-direccion').innerText = datos.direccion;
-                document.getElementById('t-pedido').innerText = datos.pedido;
-                document.getElementById('t-total').innerText = datos.total;
-
-                msg.classList.remove('hidden');
+                // 2. Crear mensaje para WhatsApp con UBICACIÓN
+                const mensaje = `*ALFA HC - NUEVO PEDIDO*%0A---------------------------%0A*Cliente:* ${nom}%0A*RIF:* ${rif}%0A*Pedido:* ${pedidoTxt}%0A*Total:* $${suma.toFixed(2)}%0A*Dirección:* ${dir}%0A---------------------------%0A_Por favor, confirma el pedido._`;
                 
-                // 3. Abrir ventana de impresión (para impresora térmica o PDF)
-                setTimeout(() => {
-                    window.print();
-                    btn.disabled = false;
-                    btn.innerText = "REGISTRAR Y GENERAR NOTA";
-                }, 500);
+                // CAMBIA ESTE NÚMERO POR EL TUYO:
+                const miTelefono = "584120000000"; 
+                
+                window.location.href = `https://wa.me/${miTelefono}?text=${mensaje}`;
 
-            } catch (error) {
-                alert("Hubo un error al guardar. Revisa tu conexión.");
+            } catch (e) {
+                alert("Error de conexión");
                 btn.disabled = false;
-                btn.innerText = "REINTENTAR";
             }
         }
     </script>
