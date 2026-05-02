@@ -249,9 +249,14 @@
         }
 
         function sendWhatsAppOrder() {
-            const nom = document.getElementById('inp-cliente').value.trim();
-            const rif = document.getElementById('inp-rif').value.trim();
-            const dir = document.getElementById('inp-direccion').value.trim();
+            const nomInput = document.getElementById('inp-cliente');
+            const rifInput = document.getElementById('inp-rif');
+            const dirInput = document.getElementById('inp-direccion');
+            
+            const nom = nomInput.value.trim();
+            const rif = rifInput.value.trim();
+            const dir = dirInput.value.trim();
+            
             let items = "";
             let total = calculateTotal();
 
@@ -261,18 +266,23 @@
 
             if (!items || !nom) return alert("Agregue productos y nombre del cliente");
 
+            // Guardar en la base de datos local (Memoria)
             let db = JSON.parse(localStorage.getItem('alfa_clientes')) || {};
             db[nom.toUpperCase()] = { rif: rif, dir: dir };
             localStorage.setItem('alfa_clientes', JSON.stringify(db));
 
             let message = `*ALFA HC - PEDIDO*\n\n*CLIENTE:* ${nom}\n*RIF:* ${rif}\n*DIR:* ${dir}\n\n*PRODUCTOS:*\n${items}\n💰 *TOTAL: $${total.toFixed(2)}*`;
             
-            // Redirigir a WhatsApp
             window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent(message)}`;
 
-            // --- ESTO ES LO NUEVO: LIMPIAR EL CARRITO ---
-            cart = {}; // Reinicia el objeto del carrito
-            renderOrderList(); // Actualiza la vista para que todo salga en cero
+            // --- LIMPIEZA TOTAL ---
+            cart = {}; // Borra carrito
+            nomInput.value = ""; // Borra Nombre
+            rifInput.value = ""; // Borra RIF
+            dirInput.value = ""; // Borra Dirección
+            document.getElementById('select-historial').value = ""; // Resetea el buscador
+            
+            renderOrderList(); // Refresca la lista de productos a cero
         }
 
         function enviarUbicacion() {
@@ -285,7 +295,7 @@
                 (pos) => {
                     const lat = pos.coords.latitude;
                     const lon = pos.coords.longitude;
-                    const mapLink = `http://google.com/maps?q=${lat},${lon}`;
+                    const mapLink = `https://maps.google.com/?q=${lat},${lon}`;
                     const msg = `📍 *UBICACIÓN DE ENTREGA:* \n${mapLink}`;
                     
                     window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent(msg)}`;
