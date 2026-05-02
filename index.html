@@ -90,7 +90,7 @@
                 <span id="txt-loc">ENVIAR UBICACIÓN DE ENTREGA</span>
             </button>
             <p class="text-[8px] text-slate-400 mb-6 uppercase tracking-wider italic">* Active su GPS primero</p>
-            <button onclick="toggleView('order')" class="bg-[#f4b41a] text-black px-8 py-4 rounded-2xl font-black text-sm w-full max-w-[280px] mx-auto shadow-xl active:scale-95 transition-all flex items-center justify-center gap-3">
+            <button onclick="goToOrder()" class="bg-[#f4b41a] text-black px-8 py-4 rounded-2xl font-black text-sm w-full max-w-[280px] mx-auto shadow-xl active:scale-95 transition-all flex items-center justify-center gap-3">
                 VER LISTA DE PRECIOS <i class="fas fa-chevron-right"></i>
             </button>
         </div>
@@ -142,43 +142,32 @@
 
         let cart = {};
 
-        // --- NAVEGACIÓN BLINDADA ---
-        function toggleView(view) {
-            if (view === 'order') {
-                // Forzamos un estado en el historial para que el botón "atrás" tenga a donde ir
-                window.history.pushState({ screen: 'order' }, "");
-                showOrderScreen();
-            } else {
-                showHeroScreen();
-            }
-        }
-
-        function showOrderScreen() {
-            document.getElementById('view-hero').style.display = 'none';
-            document.getElementById('view-order').style.display = 'flex';
+        // --- NAVEGACIÓN CORREGIDA ---
+        function goToOrder() {
+            document.getElementById('view-hero').classList.remove('view-active');
+            document.getElementById('view-order').classList.add('view-active');
             document.getElementById('back-btn').classList.remove('hidden');
             renderOrderList();
             cargarListaClientes();
-        }
-
-        function showHeroScreen() {
-            document.getElementById('view-hero').style.display = 'flex';
-            document.getElementById('view-order').style.display = 'none';
-            document.getElementById('back-btn').classList.add('hidden');
+            // Esto permite que el botón atrás del teléfono funcione
+            window.history.pushState({view: 'order'}, '');
         }
 
         function goBack() {
-            // Esto simula presionar el botón atrás del teléfono
-            window.history.back();
+            document.getElementById('view-hero').classList.add('view-active');
+            document.getElementById('view-order').classList.remove('view-active');
+            document.getElementById('back-btn').classList.add('hidden');
+            if(window.history.state?.view === 'order') window.history.back();
         }
 
-        // El "Truco Maestro": Detectar el cambio de historial
-        window.addEventListener('popstate', function(event) {
-            // Si el usuario da atrás y no hay estado, significa que regresó al inicio
-            showHeroScreen();
-        });
+        window.onpopstate = function() {
+            // Si el usuario presiona "atrás" en el teléfono
+            document.getElementById('view-hero').classList.add('view-active');
+            document.getElementById('view-order').classList.remove('view-active');
+            document.getElementById('back-btn').classList.add('hidden');
+        };
 
-        // --- FUNCIONES DE PRODUCTOS ---
+        // --- LÓGICA DE PRODUCTOS ---
         function renderOrderList() {
             const container = document.getElementById('order-list');
             container.innerHTML = products.filter(p => p.stock).map(p => `
@@ -242,7 +231,7 @@
             let total = calculateTotal();
             products.forEach(p => { if (cart[p.name] > 0) items += `• ${cart[p.name]}x ${p.name}\n`; });
 
-            if (!items || !n) return alert("Faltan datos");
+            if (!items || !n) return alert("Agregue productos y nombre");
 
             let db = JSON.parse(localStorage.getItem('alfa_clientes')) || {};
             db[n.toUpperCase()] = { rif: r, dir: d };
@@ -256,23 +245,28 @@
             renderOrderList();
         }
 
+        // --- UBICACIÓN CORREGIDA ---
         function enviarUbicacion() {
             const txt = document.getElementById('txt-loc');
             txt.innerText = "LOCALIZANDO...";
             navigator.geolocation.getCurrentPosition((pos) => {
                 const lat = pos.coords.latitude;
                 const lon = pos.coords.longitude;
-                const mapLink = `http://googleusercontent.com/maps.google.com/7{lat},${lon}`;
-                window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent('📍 Ubicación: ' + mapLink)}`;
+                // Enlace directo de Google Maps sin redirecciones raras
+                const mapLink = `https://www.google.com/maps?q=${lat},${lon}`;
+                const msg = `📍 *UBICACIÓN DE ENTREGA ALFA HC:* \n${mapLink}`;
+                window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent(msg)}`;
                 setTimeout(() => { txt.innerText = "ENVIAR UBICACIÓN DE ENTREGA"; }, 2000);
-            }, (err) => { alert("Active GPS"); txt.innerText = "ENVIAR UBICACIÓN DE ENTREGA"; });
+            }, (err) => { 
+                alert("Por favor active su GPS."); 
+                txt.innerText = "ENVIAR UBICACIÓN DE ENTREGA"; 
+            }, { enableHighAccuracy: true });
         }
 
-        // ASEGURAR SIEMPRE PANTALLA 1 AL INICIO
         window.onload = () => {
-            // Limpia cualquier rastro del historial al cargar de cero
             window.history.replaceState(null, "");
-            showHeroScreen();
+            document.getElementById('view-hero').classList.add('view-active');
+            document.getElementById('view-order').classList.remove('view-active');
         };
     </script>
 </body>
