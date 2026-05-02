@@ -89,12 +89,6 @@
             box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
             transition: transform 0.2s;
         }
-        .btn-location-maps:active { transform: scale(0.95); }
-        .btn-location-maps i {
-            color: #EA4335;
-            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
-            font-size: 1.2rem;
-        }
 
         .input-data {
             width: 100%; padding: 12px; margin-top: 10px;
@@ -129,8 +123,8 @@
                 Somos distribuidores de<br>cigarrillos nacionales de<br>muy alta calidad<br><span class="text-gold uppercase tracking-widest text-sm">MARCA BIGOTT</span>
             </h2>
 
-            <button onclick="enviarUbicacion()" class="btn-location-maps">
-                <i class="fas fa-map-marker-alt"></i>
+            <button onclick="enviarUbicacion()" class="btn-location-maps" id="btn-loc-trigger">
+                <i class="fas fa-map-marker-alt" style="color: #EA4335;"></i>
                 <span id="txt-loc">ENVIAR UBICACIÓN DE ENTREGA</span>
             </button>
             <p class="text-[8px] text-slate-400 mb-6 uppercase tracking-wider italic">* Active su GPS primero</p>
@@ -151,11 +145,9 @@
             <div id="order-list"></div>
             
             <div class="mt-6 mb-12 p-5 bg-white rounded-2xl border-2 border-gold/20 shadow-sm">
-                <h4 class="text-[11px] font-black text-slate-800 uppercase mb-3 flex items-center gap-2">
-                    <i class="fas fa-user-edit text-gold"></i> Datos del Cliente
-                </h4>
+                <h4 class="text-[11px] font-black text-slate-800 uppercase mb-3">Datos del Cliente</h4>
                 
-                <select id="select-historial" onchange="completarCliente()" class="input-data bg-gold/5 border-gold/40 mb-4">
+                <select id="select-memoria" onchange="rellenarDesdeMemoria()" class="input-data bg-gold/5 border-gold/40 mb-4">
                     <option value="">-- SELECCIONAR CLIENTE GUARDADO --</option>
                 </select>
 
@@ -178,7 +170,6 @@
     </section>
 
     <script>
-        // USA EL URL DE TU ÚLTIMA IMPLEMENTACIÓN (la de la foto que enviaste)
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbymaqrxlIUCOdz51HPIkpjLRa-y3l8pViPEDsA0fWB7qVKI3OQQ1WcQA-u5vg972sI/exec";
 
         const products = [
@@ -201,7 +192,7 @@
             document.getElementById('back-btn').classList.toggle('hidden', view === 'hero');
             if(view === 'order') {
                 renderOrderList();
-                cargarListaMemoria(); // Recarga la lista de clientes al entrar
+                cargarMemoria();
             }
         }
 
@@ -237,94 +228,94 @@
             return total;
         }
 
-        // --- CORRECCIÓN DE MEMORIA ---
-        function cargarListaMemoria() {
-            const historial = JSON.parse(localStorage.getItem('alfa_clientes_v2')) || {};
-            const select = document.getElementById('select-historial');
+        // MEMORIA
+        function cargarMemoria() {
+            const historial = JSON.parse(localStorage.getItem('alfa_db_v3')) || {};
+            const select = document.getElementById('select-memoria');
             select.innerHTML = '<option value="">-- SELECCIONAR CLIENTE GUARDADO --</option>';
-            
-            Object.keys(historial).sort().forEach(nombre => {
+            Object.keys(historial).sort().forEach(n => {
                 const opt = document.createElement('option');
-                opt.value = nombre;
-                opt.textContent = nombre;
+                opt.value = n; opt.textContent = n;
                 select.appendChild(opt);
             });
         }
 
-        function completarCliente() {
-            const nombre = document.getElementById('select-historial').value;
-            if(!nombre) return;
-            const historial = JSON.parse(localStorage.getItem('alfa_clientes_v2')) || {};
-            const d = historial[nombre];
-            if(d) {
-                document.getElementById('inp-cliente').value = nombre;
-                document.getElementById('inp-rif').value = d.rif || "";
-                document.getElementById('inp-direccion').value = d.dir || "";
-            }
+        function rellenarDesdeMemoria() {
+            const n = document.getElementById('select-memoria').value;
+            if(!n) return;
+            const historial = JSON.parse(localStorage.getItem('alfa_db_v3')) || {};
+            const d = historial[n];
+            document.getElementById('inp-cliente').value = n;
+            document.getElementById('inp-rif').value = d.rif || "";
+            document.getElementById('inp-direccion').value = d.dir || "";
         }
 
         async function sendWhatsAppOrder() {
             const nom = document.getElementById('inp-cliente').value.trim();
             const rif = document.getElementById('inp-rif').value.trim();
             const dir = document.getElementById('inp-direccion').value.trim();
-            const btn = document.getElementById('btn-final');
-            const total = calculateTotal();
-
+            const totalVal = calculateTotal();
             let items = products.filter(p => cart[p.name] > 0).map(p => `${cart[p.name]}x ${p.name}`).join(", ");
 
-            if (!items) return alert("Agregue productos");
-            if (!nom) return alert("Ponga el nombre del cliente");
+            if (!items || !nom) return alert("Faltan datos");
 
-            // GUARDAR EN MEMORIA ANTES DE ENVIAR
-            let historial = JSON.parse(localStorage.getItem('alfa_clientes_v2')) || {};
-            historial[nom.toUpperCase()] = { rif: rif, dir: dir };
-            localStorage.setItem('alfa_clientes_v2', JSON.stringify(historial));
+            // Guardar cliente
+            let db = JSON.parse(localStorage.getItem('alfa_db_v3')) || {};
+            db[nom.toUpperCase()] = { rif, dir };
+            localStorage.setItem('alfa_db_v3', JSON.stringify(db));
 
+            const btn = document.getElementById('btn-final');
             btn.disabled = true;
             btn.innerText = "REGISTRANDO...";
 
             try {
                 await fetch(WEB_APP_URL, {
                     method: "POST", mode: "no-cors",
-                    body: JSON.stringify({ cliente: nom, rif: rif, direccion: dir, pedido: items, total: total })
+                    body: JSON.stringify({ cliente: nom, rif: rif, direccion: dir, pedido: items, total: totalVal })
                 });
 
-                let msg = `*ALFA HC - NUEVO PEDIDO*\n\n*CLIENTE:* ${nom}\n*RIF:* ${rif}\n*DIR:* ${dir}\n\n*PRODUCTOS:*\n${items.replace(/, /g, '\n')}\n\n💰 *TOTAL: $${total.toFixed(2)}*`;
+                let msg = `*ALFA HC - NUEVO PEDIDO*\n\n*CLIENTE:* ${nom}\n*RIF:* ${rif}\n*DIR:* ${dir}\n\n*PRODUCTOS:*\n${items.replace(/, /g, '\n')}\n\n💰 *TOTAL: $${totalVal.toFixed(2)}*`;
                 window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent(msg)}`;
 
-                // LIMPIAR CARRITO DESPUÉS DE MANDAR
                 cart = {};
                 document.getElementById('inp-cliente').value = "";
                 document.getElementById('inp-rif').value = "";
                 document.getElementById('inp-direccion').value = "";
                 renderOrderList();
-
-            } catch (e) {
-                alert("Error de conexión");
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = `<i class="fab fa-whatsapp text-2xl"></i><span>ENVIAR PEDIDO Y GUARDAR</span>`;
-            }
+            } catch (e) { alert("Error de envío"); }
+            finally { btn.disabled = false; btn.innerHTML = `<i class="fab fa-whatsapp text-2xl"></i><span>ENVIAR PEDIDO Y GUARDAR</span>`; }
         }
 
-        // --- CORRECCIÓN DE UBICACIÓN (QUITADO EL 0/1 EXTRA) ---
+        // UBICACIÓN CORREGIDA
         function enviarUbicacion() {
-            const btnText = document.getElementById('txt-loc');
-            btnText.innerText = "LOCALIZANDO...";
+            const btn = document.getElementById('btn-loc-trigger');
+            const txt = document.getElementById('txt-loc');
             
+            txt.innerText = "BUSCANDO GPS...";
+            btn.disabled = true;
+
             navigator.geolocation.getCurrentPosition(
                 (pos) => {
-                    // AQUÍ ESTABA EL ERROR: se eliminó el prefijo incorrecto
-                    const mapLink = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+                    // Formato universal de Google Maps
+                    const lat = pos.coords.latitude;
+                    const lon = pos.coords.longitude;
+                    const mapLink = `https://www.google.com/maps?q=${lat},${lon}`;
                     const msg = `📍 *UBICACIÓN DE ENTREGA ALFA HC:* \n${mapLink}`;
+                    
                     window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent(msg)}`;
-                    btnText.innerText = "ENVIAR UBICACIÓN DE ENTREGA";
+                    
+                    // Resetear botón después de 3 segundos para permitir re-envío
+                    setTimeout(() => {
+                        txt.innerText = "ENVIAR UBICACIÓN DE ENTREGA";
+                        btn.disabled = false;
+                    }, 3000);
                 },
                 (err) => { 
-                    alert("Active su GPS."); 
-                    btnText.innerText = "ENVIAR UBICACIÓN DE ENTREGA"; 
+                    alert("Error: Active su GPS y permita el acceso."); 
+                    txt.innerText = "ENVIAR UBICACIÓN DE ENTREGA";
+                    btn.disabled = false;
                 },
-                { enableHighAccuracy: true }
+                { enableHighAccuracy: true, timeout: 10000 }
             );
         }
 
