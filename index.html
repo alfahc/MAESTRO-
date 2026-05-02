@@ -182,18 +182,42 @@
 
         let cart = {};
 
-        function toggleView(view) {
+        // --- MANEJO DE NAVEGACIÓN Y HISTORIAL ---
+        function toggleView(view, pushState = true) {
             document.getElementById('view-hero').classList.toggle('view-active', view === 'hero');
             document.getElementById('view-order').classList.toggle('view-active', view === 'order');
             document.getElementById('back-btn').classList.toggle('hidden', view === 'hero');
+
             if(view === 'order') {
                 renderOrderList();
                 cargarListaClientes();
+                // Si vamos a la pantalla de pedido, agregamos un estado al historial
+                if(pushState) history.pushState({view: 'order'}, '');
+            } else {
+                // Si volvemos al hero, nos aseguramos que el historial esté limpio
+                if(pushState && history.state?.view === 'order') history.back();
             }
         }
 
-        function goBack() { toggleView('hero'); }
+        // Función para el botón "Volver" de la interfaz
+        function goBack() { 
+            if(history.state?.view === 'order') {
+                history.back(); 
+            } else {
+                toggleView('hero', false);
+            }
+        }
 
+        // Detectar el botón físico "Atrás" del teléfono
+        window.onpopstate = function(event) {
+            if (event.state && event.state.view === 'order') {
+                toggleView('order', false);
+            } else {
+                toggleView('hero', false);
+            }
+        };
+
+        // --- RESTO DE FUNCIONES ---
         function renderOrderList() {
             const container = document.getElementById('order-list');
             container.innerHTML = products.filter(p => p.stock).map(p => `
@@ -266,7 +290,6 @@
 
             if (!items || !nom) return alert("Agregue productos y nombre del cliente");
 
-            // Guardar en la base de datos local (Memoria)
             let db = JSON.parse(localStorage.getItem('alfa_clientes')) || {};
             db[nom.toUpperCase()] = { rif: rif, dir: dir };
             localStorage.setItem('alfa_clientes', JSON.stringify(db));
@@ -275,14 +298,13 @@
             
             window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent(message)}`;
 
-            // --- LIMPIEZA TOTAL ---
-            cart = {}; // Borra carrito
-            nomInput.value = ""; // Borra Nombre
-            rifInput.value = ""; // Borra RIF
-            dirInput.value = ""; // Borra Dirección
-            document.getElementById('select-historial').value = ""; // Resetea el buscador
-            
-            renderOrderList(); // Refresca la lista de productos a cero
+            // Limpieza
+            cart = {};
+            nomInput.value = "";
+            rifInput.value = "";
+            dirInput.value = "";
+            document.getElementById('select-historial').value = "";
+            renderOrderList();
         }
 
         function enviarUbicacion() {
@@ -295,11 +317,9 @@
                 (pos) => {
                     const lat = pos.coords.latitude;
                     const lon = pos.coords.longitude;
-                    const mapLink = `https://maps.google.com/?q=${lat},${lon}`;
+                    const mapLink = `http://googleusercontent.com/maps.google.com/6{lat},${lon}`;
                     const msg = `📍 *UBICACIÓN DE ENTREGA:* \n${mapLink}`;
-                    
                     window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent(msg)}`;
-                    
                     setTimeout(() => {
                         txt.innerText = "ENVIAR UBICACIÓN DE ENTREGA";
                         btn.style.opacity = "1";
@@ -314,7 +334,13 @@
             );
         }
 
-        window.onload = () => toggleView('hero');
+        // AL CARGAR: Forzar siempre Pantalla 1 y limpiar historial residual
+        window.onload = () => {
+            if (window.history.state) {
+                history.replaceState(null, ''); 
+            }
+            toggleView('hero', false);
+        };
     </script>
 </body>
 </html>
