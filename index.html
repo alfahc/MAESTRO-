@@ -92,8 +92,8 @@
 
         .input-data {
             width: 100%; padding: 10px; margin-top: 8px;
-            border-radius: 10px; border: 1px solid #e2e8f0;
-            color: #334155; font-size: 12px; font-weight: 600;
+            border-radius: 10px; border: 1px solid #cbd5e1;
+            color: #1e293b; font-size: 12px; font-weight: 600;
         }
 
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
@@ -227,7 +227,6 @@
             return total;
         }
 
-        // --- SISTEMA DE MEMORIA ---
         function cargarListaClientes() {
             const db = JSON.parse(localStorage.getItem('alfa_clientes')) || {};
             const select = document.getElementById('select-historial');
@@ -262,13 +261,18 @@
 
             if (!items || !nom) return alert("Agregue productos y nombre del cliente");
 
-            // Guardar cliente para la próxima
             let db = JSON.parse(localStorage.getItem('alfa_clientes')) || {};
             db[nom.toUpperCase()] = { rif: rif, dir: dir };
             localStorage.setItem('alfa_clientes', JSON.stringify(db));
 
             let message = `*ALFA HC - PEDIDO*\n\n*CLIENTE:* ${nom}\n*RIF:* ${rif}\n*DIR:* ${dir}\n\n*PRODUCTOS:*\n${items}\n💰 *TOTAL: $${total.toFixed(2)}*`;
+            
+            // Redirigir a WhatsApp
             window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent(message)}`;
+
+            // --- ESTO ES LO NUEVO: LIMPIAR EL CARRITO ---
+            cart = {}; // Reinicia el objeto del carrito
+            renderOrderList(); // Actualiza la vista para que todo salga en cero
         }
 
         function enviarUbicacion() {
@@ -281,13 +285,11 @@
                 (pos) => {
                     const lat = pos.coords.latitude;
                     const lon = pos.coords.longitude;
-                    // Enlace corregido para WhatsApp
-                    const mapLink = `https://www.google.com/maps?q=${lat},${lon}`;
-                    const msg = `📍 *UBICACIÓN DE ENTREGA ALFA HC:* \n${mapLink}`;
+                    const mapLink = `http://google.com/maps?q=${lat},${lon}`;
+                    const msg = `📍 *UBICACIÓN DE ENTREGA:* \n${mapLink}`;
                     
                     window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent(msg)}`;
                     
-                    // Reseteo para permitir nuevos envíos
                     setTimeout(() => {
                         txt.innerText = "ENVIAR UBICACIÓN DE ENTREGA";
                         btn.style.opacity = "1";
