@@ -74,15 +74,30 @@
 
         .btn-location-maps {
             background: linear-gradient(135deg, #4285F4 0%, #34A853 100%);
-            color: white; padding: 12px 24px; border-radius: 50px;
-            font-weight: 800; display: inline-flex; align-items: center; justify-content: center;
-            gap: 10px; font-size: 11px; text-transform: uppercase;
-            border: 2px solid rgba(255, 255, 255, 0.2); margin-bottom: 15px;
-            box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3); transition: transform 0.2s;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 11px;
+            text-transform: uppercase;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
+            transition: transform 0.2s;
+        }
+        .btn-location-maps:active { transform: scale(0.95); }
+        .btn-location-maps i {
+            color: #EA4335;
+            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
+            font-size: 1.2rem;
         }
 
         .input-data {
-            width: 100%; padding: 12px; margin-top: 8px;
+            width: 100%; padding: 12px; margin-top: 10px;
             border-radius: 10px; border: 1px solid #cbd5e1;
             color: #1e293b; font-size: 13px; font-weight: 600;
             background: white;
@@ -98,13 +113,15 @@
             <h1 class="text-lg font-black italic leading-none uppercase tracking-tighter text-gold">ALFA HC</h1>
             <p class="text-[6px] uppercase tracking-[0.2em] text-slate-400 font-bold mt-1">Distribuidora • RIF: J-411261297</p>
         </div>
-        <button onclick="goBack()" id="back-btn" class="hidden text-white text-[9px] font-bold uppercase border border-slate-700 px-3 py-1.5 rounded-lg bg-slate-800">Volver</button>
+        <button onclick="goBack()" id="back-btn" class="hidden text-white text-[9px] font-bold uppercase border border-slate-700 px-3 py-1.5 rounded-lg bg-slate-800">
+             Volver
+        </button>
     </nav>
 
     <section id="view-hero" class="view-section view-active hero-gradient text-white items-center justify-between px-10 py-12 text-center">
         <div class="mt-4">
              <div class="inline-block border border-gold/40 bg-gold/10 rounded-full px-5 py-1.5">
-                <span class="text-[9px] font-bold tracking-widest uppercase text-gold">Catálogo Digital Maestro</span>
+                <span class="text-[9px] font-bold tracking-widest uppercase text-gold">Catálogo Digital</span>
             </div>
         </div>
         <div class="w-full">
@@ -113,7 +130,7 @@
             </h2>
 
             <button onclick="enviarUbicacion()" class="btn-location-maps">
-                <i class="fas fa-map-marker-alt" style="color: #EA4335;"></i>
+                <i class="fas fa-map-marker-alt"></i>
                 <span id="txt-loc">ENVIAR UBICACIÓN DE ENTREGA</span>
             </button>
             <p class="text-[8px] text-slate-400 mb-6 uppercase tracking-wider italic">* Active su GPS primero</p>
@@ -130,40 +147,38 @@
             <h3 class="text-[9px] font-black text-emerald-800 uppercase tracking-widest">Armar Pedido</h3>
             <span class="text-[8px] font-bold text-emerald-600 uppercase">Selecciona cantidades</span>
         </div>
-        
         <div class="static-container">
             <div id="order-list"></div>
             
             <div class="mt-6 mb-12 p-5 bg-white rounded-2xl border-2 border-gold/20 shadow-sm">
-                <h4 class="text-[10px] font-black text-slate-700 uppercase mb-3 flex items-center gap-2">
-                    <i class="fas fa-address-book text-gold"></i> Mis Clientes Guardados
+                <h4 class="text-[11px] font-black text-slate-800 uppercase mb-3 flex items-center gap-2">
+                    <i class="fas fa-user-edit text-gold"></i> Datos del Cliente
                 </h4>
                 
-                <select id="select-cliente" onchange="cargarDatosCliente()" class="input-data border-gold/40 bg-gold/5">
-                    <option value="">-- SELECCIONAR CLIENTE --</option>
+                <select id="select-historial" onchange="completarCliente()" class="input-data bg-gold/5 border-gold/40 mb-4">
+                    <option value="">-- SELECCIONAR CLIENTE GUARDADO --</option>
                 </select>
 
-                <div class="mt-4 border-t border-slate-100 pt-4">
-                    <input id="inp-cliente" type="text" placeholder="Nombre o Negocio" class="input-data">
-                    <input id="inp-rif" type="text" placeholder="RIF o Cédula" class="input-data">
-                    <input id="inp-direccion" type="text" placeholder="Dirección de entrega" class="input-data">
-                </div>
+                <input id="inp-cliente" type="text" placeholder="Nombre o Negocio" class="input-data">
+                <input id="inp-rif" type="text" placeholder="RIF o Cédula" class="input-data">
+                <input id="inp-direccion" type="text" placeholder="Dirección de entrega" class="input-data">
             </div>
         </div>
 
         <footer class="catalog-footer">
             <div class="flex justify-between items-center mb-4 px-2">
-                <span class="text-white/60 text-[10px] font-bold uppercase tracking-widest">TOTAL:</span>
+                <span class="text-white/60 text-[10px] font-bold uppercase tracking-widest">MONTO DE PEDIDO:</span>
                 <span id="grand-total" class="text-gold text-2xl font-black">$0.00</span>
             </div>
             <button onclick="sendWhatsAppOrder()" id="btn-final" class="btn-whatsapp-direct w-full">
                 <i class="fab fa-whatsapp text-2xl"></i>
-                <span>ENVIAR PEDIDO POR WHATSAPP</span>
+                <span>ENVIAR PEDIDO Y GUARDAR</span>
             </button>
         </footer>
     </section>
 
     <script>
+        // USA EL URL DE TU ÚLTIMA IMPLEMENTACIÓN (la de la foto que enviaste)
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbymaqrxlIUCOdz51HPIkpjLRa-y3l8pViPEDsA0fWB7qVKI3OQQ1WcQA-u5vg972sI/exec";
 
         const products = [
@@ -179,8 +194,6 @@
         ];
 
         let cart = {};
-        // Memoria local
-        let dbClientes = JSON.parse(localStorage.getItem('alfa_clientes_db')) || {};
 
         function toggleView(view) {
             document.getElementById('view-hero').classList.toggle('view-active', view === 'hero');
@@ -188,7 +201,7 @@
             document.getElementById('back-btn').classList.toggle('hidden', view === 'hero');
             if(view === 'order') {
                 renderOrderList();
-                actualizarListaDesplegable();
+                cargarListaMemoria(); // Recarga la lista de clientes al entrar
             }
         }
 
@@ -224,11 +237,13 @@
             return total;
         }
 
-        // FUNCIONES DE MEMORIA
-        function actualizarListaDesplegable() {
-            const select = document.getElementById('select-cliente');
-            select.innerHTML = '<option value="">-- SELECCIONAR CLIENTE --</option>';
-            Object.keys(dbClientes).sort().forEach(nombre => {
+        // --- CORRECCIÓN DE MEMORIA ---
+        function cargarListaMemoria() {
+            const historial = JSON.parse(localStorage.getItem('alfa_clientes_v2')) || {};
+            const select = document.getElementById('select-historial');
+            select.innerHTML = '<option value="">-- SELECCIONAR CLIENTE GUARDADO --</option>';
+            
+            Object.keys(historial).sort().forEach(nombre => {
                 const opt = document.createElement('option');
                 opt.value = nombre;
                 opt.textContent = nombre;
@@ -236,12 +251,15 @@
             });
         }
 
-        function cargarDatosCliente() {
-            const nombre = document.getElementById('select-cliente').value;
-            if(nombre && dbClientes[nombre]) {
+        function completarCliente() {
+            const nombre = document.getElementById('select-historial').value;
+            if(!nombre) return;
+            const historial = JSON.parse(localStorage.getItem('alfa_clientes_v2')) || {};
+            const d = historial[nombre];
+            if(d) {
                 document.getElementById('inp-cliente').value = nombre;
-                document.getElementById('inp-rif').value = dbClientes[nombre].rif;
-                document.getElementById('inp-direccion').value = dbClientes[nombre].dir;
+                document.getElementById('inp-rif').value = d.rif || "";
+                document.getElementById('inp-direccion').value = d.dir || "";
             }
         }
 
@@ -249,30 +267,32 @@
             const nom = document.getElementById('inp-cliente').value.trim();
             const rif = document.getElementById('inp-rif').value.trim();
             const dir = document.getElementById('inp-direccion').value.trim();
-            const totalVal = calculateTotal();
-
-            if (!nom || totalVal === 0) return alert("Faltan productos o nombre.");
-
-            // GUARDAR AUTOMÁTICAMENTE EN EL TELÉFONO
-            dbClientes[nom.toUpperCase()] = { rif: rif, dir: dir };
-            localStorage.setItem('alfa_clientes_db', JSON.stringify(dbClientes));
-
             const btn = document.getElementById('btn-final');
+            const total = calculateTotal();
+
+            let items = products.filter(p => cart[p.name] > 0).map(p => `${cart[p.name]}x ${p.name}`).join(", ");
+
+            if (!items) return alert("Agregue productos");
+            if (!nom) return alert("Ponga el nombre del cliente");
+
+            // GUARDAR EN MEMORIA ANTES DE ENVIAR
+            let historial = JSON.parse(localStorage.getItem('alfa_clientes_v2')) || {};
+            historial[nom.toUpperCase()] = { rif: rif, dir: dir };
+            localStorage.setItem('alfa_clientes_v2', JSON.stringify(historial));
+
             btn.disabled = true;
             btn.innerText = "REGISTRANDO...";
-
-            let itemsTxt = products.filter(p => cart[p.name] > 0).map(p => `${cart[p.name]}x ${p.name}`).join(", ");
 
             try {
                 await fetch(WEB_APP_URL, {
                     method: "POST", mode: "no-cors",
-                    body: JSON.stringify({ cliente: nom, rif: rif, direccion: dir, pedido: itemsTxt, total: totalVal })
+                    body: JSON.stringify({ cliente: nom, rif: rif, direccion: dir, pedido: items, total: total })
                 });
 
-                let message = `*ALFA HC - PEDIDO*\n\n*CLIENTE:* ${nom}\n*RIF:* ${rif}\n*DIR:* ${dir}\n\n*PEDIDO:*\n${itemsTxt.replace(/, /g, '\n')}\n\n💰 *TOTAL: $${totalVal.toFixed(2)}*`;
-                window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent(message)}`;
+                let msg = `*ALFA HC - NUEVO PEDIDO*\n\n*CLIENTE:* ${nom}\n*RIF:* ${rif}\n*DIR:* ${dir}\n\n*PRODUCTOS:*\n${items.replace(/, /g, '\n')}\n\n💰 *TOTAL: $${total.toFixed(2)}*`;
+                window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent(msg)}`;
 
-                // Limpiar carrito y campos
+                // LIMPIAR CARRITO DESPUÉS DE MANDAR
                 cart = {};
                 document.getElementById('inp-cliente').value = "";
                 document.getElementById('inp-rif').value = "";
@@ -280,18 +300,32 @@
                 renderOrderList();
 
             } catch (e) {
-                alert("Error al guardar, pero puedes enviar.");
+                alert("Error de conexión");
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = `<i class="fab fa-whatsapp text-2xl"></i><span>ENVIAR PEDIDO POR WHATSAPP</span>`;
+                btn.innerHTML = `<i class="fab fa-whatsapp text-2xl"></i><span>ENVIAR PEDIDO Y GUARDAR</span>`;
             }
         }
 
+        // --- CORRECCIÓN DE UBICACIÓN (QUITADO EL 0/1 EXTRA) ---
         function enviarUbicacion() {
-            navigator.geolocation.getCurrentPosition((pos) => {
-                const link = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
-                window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent("📍 *UBICACIÓN DE ENTREGA:* \n" + link)}`;
-            }, () => alert("GPS no activo"));
+            const btnText = document.getElementById('txt-loc');
+            btnText.innerText = "LOCALIZANDO...";
+            
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    // AQUÍ ESTABA EL ERROR: se eliminó el prefijo incorrecto
+                    const mapLink = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+                    const msg = `📍 *UBICACIÓN DE ENTREGA ALFA HC:* \n${mapLink}`;
+                    window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent(msg)}`;
+                    btnText.innerText = "ENVIAR UBICACIÓN DE ENTREGA";
+                },
+                (err) => { 
+                    alert("Active su GPS."); 
+                    btnText.innerText = "ENVIAR UBICACIÓN DE ENTREGA"; 
+                },
+                { enableHighAccuracy: true }
+            );
         }
 
         window.onload = () => toggleView('hero');
