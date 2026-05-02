@@ -91,10 +91,9 @@
         }
 
         .input-data {
-            width: 100%; padding: 12px; margin-top: 10px;
-            border-radius: 10px; border: 1px solid #cbd5e1;
-            color: #1e293b; font-size: 13px; font-weight: 600;
-            background: white;
+            width: 100%; padding: 10px; margin-top: 8px;
+            border-radius: 10px; border: 1px solid #e2e8f0;
+            color: #334155; font-size: 12px; font-weight: 600;
         }
 
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
@@ -123,8 +122,8 @@
                 Somos distribuidores de<br>cigarrillos nacionales de<br>muy alta calidad<br><span class="text-gold uppercase tracking-widest text-sm">MARCA BIGOTT</span>
             </h2>
 
-            <button onclick="enviarUbicacion()" class="btn-location-maps" id="btn-loc-trigger">
-                <i class="fas fa-map-marker-alt" style="color: #EA4335;"></i>
+            <button onclick="enviarUbicacion()" class="btn-location-maps" id="btn-loc">
+                <i class="fas fa-map-marker-alt"></i>
                 <span id="txt-loc">ENVIAR UBICACIÓN DE ENTREGA</span>
             </button>
             <p class="text-[8px] text-slate-400 mb-6 uppercase tracking-wider italic">* Active su GPS primero</p>
@@ -144,34 +143,31 @@
         <div class="static-container">
             <div id="order-list"></div>
             
-            <div class="mt-6 mb-12 p-5 bg-white rounded-2xl border-2 border-gold/20 shadow-sm">
-                <h4 class="text-[11px] font-black text-slate-800 uppercase mb-3">Datos del Cliente</h4>
-                
-                <select id="select-memoria" onchange="rellenarDesdeMemoria()" class="input-data bg-gold/5 border-gold/40 mb-4">
-                    <option value="">-- SELECCIONAR CLIENTE GUARDADO --</option>
+            <div class="mt-4 p-4 bg-white rounded-xl border border-gold/30 shadow-sm mb-6">
+                <h4 class="text-[10px] font-black text-slate-700 uppercase mb-2">Clientes Guardados</h4>
+                <select id="select-historial" onchange="autocompletarCliente()" class="input-data bg-gold/5 border-gold/20 mb-4">
+                    <option value="">-- Buscar cliente --</option>
                 </select>
-
+                
+                <h4 class="text-[10px] font-black text-slate-700 uppercase mb-2">Datos de Entrega</h4>
                 <input id="inp-cliente" type="text" placeholder="Nombre o Negocio" class="input-data">
                 <input id="inp-rif" type="text" placeholder="RIF o Cédula" class="input-data">
                 <input id="inp-direccion" type="text" placeholder="Dirección de entrega" class="input-data">
             </div>
         </div>
-
         <footer class="catalog-footer">
             <div class="flex justify-between items-center mb-4 px-2">
                 <span class="text-white/60 text-[10px] font-bold uppercase tracking-widest">MONTO DE PEDIDO:</span>
                 <span id="grand-total" class="text-gold text-2xl font-black">$0.00</span>
             </div>
-            <button onclick="sendWhatsAppOrder()" id="btn-final" class="btn-whatsapp-direct w-full">
+            <button onclick="sendWhatsAppOrder()" class="btn-whatsapp-direct w-full">
                 <i class="fab fa-whatsapp text-2xl"></i>
-                <span>ENVIAR PEDIDO Y GUARDAR</span>
+                <span>ENVIAR PEDIDO POR WHATSAPP</span>
             </button>
         </footer>
     </section>
 
     <script>
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbymaqrxlIUCOdz51HPIkpjLRa-y3l8pViPEDsA0fWB7qVKI3OQQ1WcQA-u5vg972sI/exec";
-
         const products = [
             { name: 'BELMONT', price: 25.60, stock: true },
             { name: 'BELMONT MEDIA CAJA', price: 15.40, stock: true },
@@ -192,7 +188,7 @@
             document.getElementById('back-btn').classList.toggle('hidden', view === 'hero');
             if(view === 'order') {
                 renderOrderList();
-                cargarMemoria();
+                cargarListaClientes();
             }
         }
 
@@ -200,7 +196,7 @@
 
         function renderOrderList() {
             const container = document.getElementById('order-list');
-            container.innerHTML = products.map(p => `
+            container.innerHTML = products.filter(p => p.stock).map(p => `
                 <div class="product-card">
                     <div class="flex flex-col flex-1">
                         <span class="text-[10px] font-black uppercase text-slate-700">${p.name}</span>
@@ -217,105 +213,92 @@
         }
 
         function updateQty(name, change) {
-            cart[name] = Math.max(0, (cart[name] || 0) + change);
+            if (!cart[name]) cart[name] = 0;
+            cart[name] = Math.max(0, cart[name] + change);
             renderOrderList();
         }
 
         function calculateTotal() {
             let total = 0;
-            products.forEach(p => { if (cart[p.name]) total += p.price * cart[p.name]; });
+            products.forEach(p => {
+                if (cart[p.name]) total += p.price * cart[p.name];
+            });
             document.getElementById('grand-total').innerText = `$${total.toFixed(2)}`;
             return total;
         }
 
-        // MEMORIA
-        function cargarMemoria() {
-            const historial = JSON.parse(localStorage.getItem('alfa_db_v3')) || {};
-            const select = document.getElementById('select-memoria');
-            select.innerHTML = '<option value="">-- SELECCIONAR CLIENTE GUARDADO --</option>';
-            Object.keys(historial).sort().forEach(n => {
+        // --- SISTEMA DE MEMORIA ---
+        function cargarListaClientes() {
+            const db = JSON.parse(localStorage.getItem('alfa_clientes')) || {};
+            const select = document.getElementById('select-historial');
+            select.innerHTML = '<option value="">-- Buscar cliente --</option>';
+            Object.keys(db).sort().forEach(nombre => {
                 const opt = document.createElement('option');
-                opt.value = n; opt.textContent = n;
+                opt.value = nombre; opt.textContent = nombre;
                 select.appendChild(opt);
             });
         }
 
-        function rellenarDesdeMemoria() {
-            const n = document.getElementById('select-memoria').value;
-            if(!n) return;
-            const historial = JSON.parse(localStorage.getItem('alfa_db_v3')) || {};
-            const d = historial[n];
-            document.getElementById('inp-cliente').value = n;
+        function autocompletarCliente() {
+            const nombre = document.getElementById('select-historial').value;
+            if(!nombre) return;
+            const db = JSON.parse(localStorage.getItem('alfa_clientes')) || {};
+            const d = db[nombre];
+            document.getElementById('inp-cliente').value = nombre;
             document.getElementById('inp-rif').value = d.rif || "";
             document.getElementById('inp-direccion').value = d.dir || "";
         }
 
-        async function sendWhatsAppOrder() {
+        function sendWhatsAppOrder() {
             const nom = document.getElementById('inp-cliente').value.trim();
             const rif = document.getElementById('inp-rif').value.trim();
             const dir = document.getElementById('inp-direccion').value.trim();
-            const totalVal = calculateTotal();
-            let items = products.filter(p => cart[p.name] > 0).map(p => `${cart[p.name]}x ${p.name}`).join(", ");
+            let items = "";
+            let total = calculateTotal();
 
-            if (!items || !nom) return alert("Faltan datos");
+            products.forEach(p => {
+                if (cart[p.name] > 0) items += `• ${cart[p.name]}x ${p.name}\n`;
+            });
 
-            // Guardar cliente
-            let db = JSON.parse(localStorage.getItem('alfa_db_v3')) || {};
-            db[nom.toUpperCase()] = { rif, dir };
-            localStorage.setItem('alfa_db_v3', JSON.stringify(db));
+            if (!items || !nom) return alert("Agregue productos y nombre del cliente");
 
-            const btn = document.getElementById('btn-final');
-            btn.disabled = true;
-            btn.innerText = "REGISTRANDO...";
+            // Guardar cliente para la próxima
+            let db = JSON.parse(localStorage.getItem('alfa_clientes')) || {};
+            db[nom.toUpperCase()] = { rif: rif, dir: dir };
+            localStorage.setItem('alfa_clientes', JSON.stringify(db));
 
-            try {
-                await fetch(WEB_APP_URL, {
-                    method: "POST", mode: "no-cors",
-                    body: JSON.stringify({ cliente: nom, rif: rif, direccion: dir, pedido: items, total: totalVal })
-                });
-
-                let msg = `*ALFA HC - NUEVO PEDIDO*\n\n*CLIENTE:* ${nom}\n*RIF:* ${rif}\n*DIR:* ${dir}\n\n*PRODUCTOS:*\n${items.replace(/, /g, '\n')}\n\n💰 *TOTAL: $${totalVal.toFixed(2)}*`;
-                window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent(msg)}`;
-
-                cart = {};
-                document.getElementById('inp-cliente').value = "";
-                document.getElementById('inp-rif').value = "";
-                document.getElementById('inp-direccion').value = "";
-                renderOrderList();
-            } catch (e) { alert("Error de envío"); }
-            finally { btn.disabled = false; btn.innerHTML = `<i class="fab fa-whatsapp text-2xl"></i><span>ENVIAR PEDIDO Y GUARDAR</span>`; }
+            let message = `*ALFA HC - PEDIDO*\n\n*CLIENTE:* ${nom}\n*RIF:* ${rif}\n*DIR:* ${dir}\n\n*PRODUCTOS:*\n${items}\n💰 *TOTAL: $${total.toFixed(2)}*`;
+            window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent(message)}`;
         }
 
-        // UBICACIÓN CORREGIDA
         function enviarUbicacion() {
-            const btn = document.getElementById('btn-loc-trigger');
+            const btn = document.getElementById('btn-loc');
             const txt = document.getElementById('txt-loc');
+            txt.innerText = "LOCALIZANDO...";
+            btn.style.opacity = "0.7";
             
-            txt.innerText = "BUSCANDO GPS...";
-            btn.disabled = true;
-
             navigator.geolocation.getCurrentPosition(
                 (pos) => {
-                    // Formato universal de Google Maps
                     const lat = pos.coords.latitude;
                     const lon = pos.coords.longitude;
+                    // Enlace corregido para WhatsApp
                     const mapLink = `https://www.google.com/maps?q=${lat},${lon}`;
                     const msg = `📍 *UBICACIÓN DE ENTREGA ALFA HC:* \n${mapLink}`;
                     
                     window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent(msg)}`;
                     
-                    // Resetear botón después de 3 segundos para permitir re-envío
+                    // Reseteo para permitir nuevos envíos
                     setTimeout(() => {
                         txt.innerText = "ENVIAR UBICACIÓN DE ENTREGA";
-                        btn.disabled = false;
-                    }, 3000);
+                        btn.style.opacity = "1";
+                    }, 2000);
                 },
                 (err) => { 
-                    alert("Error: Active su GPS y permita el acceso."); 
+                    alert("Active su GPS."); 
                     txt.innerText = "ENVIAR UBICACIÓN DE ENTREGA";
-                    btn.disabled = false;
+                    btn.style.opacity = "1";
                 },
-                { enableHighAccuracy: true, timeout: 10000 }
+                { enableHighAccuracy: true }
             );
         }
 
