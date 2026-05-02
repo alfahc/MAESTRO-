@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Alfa HC | Gestión Pro</title>
+    <title>Alfa HC | Gestión Total</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -12,14 +12,14 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
         :root { --midnight: #121b2d; --gold: #f4b41a; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--midnight); color: white; margin: 0; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--midnight); color: white; margin: 0; overflow-x: hidden; }
         .view-section { display: none; min-height: 100vh; flex-direction: column; width: 100%; }
         .view-active { display: flex; }
         .card { background: white; border-radius: 15px; padding: 15px; margin-bottom: 10px; color: #334155; border: 1px solid #e2e8f0; }
         .btn-gold { background: var(--gold); color: black; padding: 15px; border-radius: 12px; font-weight: 800; width: 100%; border: none; }
         input { width: 100%; padding: 12px; margin-top: 8px; border-radius: 10px; border: 1px solid #cbd5e1; color: black; font-weight: 600; }
         .fixed-footer { position: fixed; bottom: 0; left: 0; right: 0; background: var(--midnight); padding: 15px; border-top: 1px solid #1e293b; z-index: 1000; }
-        .search-results { position: absolute; background: white; width: 100%; z-index: 50; border-radius: 0 0 10px 10px; box-shadow: 0 10px 15px rgba(0,0,0,0.2); max-height: 200px; overflow-y: auto; }
+        .search-results { position: absolute; background: white; width: 100%; z-index: 50; border-radius: 0 0 10px 10px; box-shadow: 0 10px 15px rgba(0,0,0,0.2); max-height: 200px; overflow-y: auto; border: 1px solid #ddd; }
     </style>
 </head>
 <body>
@@ -32,27 +32,29 @@
         <button onclick="goBack()" id="back-btn" class="hidden bg-slate-800 text-[10px] px-3 py-2 rounded-lg font-bold">VOLVER</button>
     </nav>
 
-    <section id="view-hero" class="view-section view-active items-center justify-center p-8 space-y-4">
+    <section id="view-hero" class="view-section view-active items-center justify-center p-8 space-y-4 bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#121b2d_100%)]">
         <button onclick="goTo('order')" class="btn-gold shadow-lg"><i class="fas fa-cart-plus mr-2"></i> NUEVO PEDIDO</button>
         <button onclick="goTo('debts')" class="w-full bg-white text-slate-800 p-4 rounded-xl font-black shadow-lg"><i class="fas fa-wallet text-blue-600 mr-2"></i> CARTERA DE DEUDORES</button>
-        <button onclick="enviarUbicacion()" class="bg-gradient-to-r from-blue-500 to-green-500 text-white px-6 py-3 rounded-full font-bold text-xs uppercase tracking-widest"><i class="fas fa-map-marker-alt mr-2 text-red-500"></i> Compartir Ubicación</button>
+        
+        <div class="w-full pt-8 space-y-3">
+            <button onclick="enviarUbicacion()" class="w-full bg-slate-700/50 text-white p-3 rounded-full font-bold text-[10px] uppercase tracking-widest border border-slate-600"><i class="fas fa-map-marker-alt mr-2 text-red-500"></i> Compartir Ubicación</button>
+            <button onclick="goTo('sync')" class="w-full bg-slate-700/50 text-white p-3 rounded-full font-bold text-[10px] uppercase tracking-widest border border-slate-600"><i class="fas fa-sync-alt mr-2 text-blue-400"></i> Respaldar / Cambiar Celular</button>
+        </div>
     </section>
 
     <section id="view-order" class="view-section">
-        <div class="p-4 pb-40 overflow-y-auto bg-slate-50 flex-1">
+        <div class="p-4 pb-44 overflow-y-auto bg-slate-50 flex-1">
             <div id="product-list" class="space-y-2"></div>
-            
-            <div class="card mt-6">
-                <h4 class="text-[10px] font-black text-slate-400 uppercase mb-2">Buscador / Datos Cliente</h4>
+            <div class="card mt-6 border-gold/30">
+                <h4 class="text-[10px] font-black text-slate-400 uppercase mb-2">Datos del Cliente</h4>
                 <div class="relative">
-                    <input id="inp-nom" type="text" placeholder="Nombre o Negocio" oninput="buscarCliente(this.value)">
+                    <input id="inp-nom" type="text" placeholder="Nombre o Negocio" oninput="buscarCliente(this.value)" autocomplete="off">
                     <div id="results" class="search-results hidden"></div>
                 </div>
                 <input id="inp-rif" type="text" placeholder="RIF o Cédula">
                 <input id="inp-dir" type="text" placeholder="Dirección del Local">
             </div>
         </div>
-
         <footer class="fixed-footer">
             <div class="flex justify-between items-center mb-3">
                 <span class="text-slate-400 text-xs font-bold">MONTO PEDIDO:</span>
@@ -65,9 +67,32 @@
     </section>
 
     <section id="view-debts" class="view-section bg-slate-50">
-        <div id="debt-list" class="p-4 flex-1"></div>
+        <div id="debt-list" class="p-4 pb-32 flex-1"></div>
         <div class="fixed-footer text-center">
             <p id="total-cartera" class="text-gold font-black text-lg"></p>
+        </div>
+    </section>
+
+    <section id="view-sync" class="view-section bg-slate-50 p-6 text-slate-800">
+        <div class="card text-center py-8">
+            <i class="fas fa-cloud-download-alt text-4xl text-blue-500 mb-4"></i>
+            <h3 class="font-black text-lg uppercase">Respaldo Maestro</h3>
+            <p class="text-xs text-slate-500 mt-2">Usa esto para guardar tus datos fuera del celular o pasarlos a un teléfono nuevo.</p>
+            
+            <div class="mt-8 space-y-6">
+                <div>
+                    <p class="text-[10px] font-bold text-slate-400 mb-2 uppercase">1. Guardar copia de seguridad</p>
+                    <button onclick="exportarDatos()" class="btn-gold bg-blue-600 text-white">EXPORTAR TODO (.JSON)</button>
+                </div>
+                
+                <hr>
+                
+                <div>
+                    <p class="text-[10px] font-bold text-slate-400 mb-2 uppercase">2. Restaurar en este teléfono</p>
+                    <input type="file" id="fileInput" class="hidden" onchange="importarDatos(event)">
+                    <button onclick="document.getElementById('fileInput').click()" class="btn-gold bg-slate-800 text-white">SUBIR ARCHIVO DE RESPALDO</button>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -81,7 +106,6 @@
         ];
         let cart = {};
 
-        // NAVEGACIÓN
         function goTo(v) { window.history.pushState({v}, ""); show(v); }
         function goBack() { window.history.back(); }
         window.onpopstate = (e) => show(e.state?.v || 'hero');
@@ -93,7 +117,6 @@
             if(v === 'debts') renderDebts();
         }
 
-        // LÓGICA PEDIDO
         function renderProds() {
             document.getElementById('product-list').innerHTML = prods.map(p => `
                 <div class="card flex justify-between items-center py-2">
@@ -114,14 +137,12 @@
             return t;
         }
 
-        // MEMORIA DE CLIENTES
         function buscarCliente(val) {
             const db = JSON.parse(localStorage.getItem('alfa_db')) || {};
             const res = document.getElementById('results');
             const matches = Object.keys(db).filter(k => k.toLowerCase().includes(val.toLowerCase()));
-            
             if(val && matches.length) {
-                res.innerHTML = matches.map(m => `<div onclick="setCli('${m}')" class="p-3 border-b text-sm text-slate-700 font-bold bg-white">${m}</div>`).join('');
+                res.innerHTML = matches.map(m => `<div onclick="setCli('${m}')" class="p-3 border-b text-sm font-bold bg-white">${m}</div>`).join('');
                 res.classList.remove('hidden');
             } else res.classList.add('hidden');
         }
@@ -134,7 +155,6 @@
             document.getElementById('results').classList.add('hidden');
         }
 
-        // PROCESAR VENTA Y LIMPIAR
         function procesarVenta() {
             const nom = document.getElementById('inp-nom').value.trim().toUpperCase();
             const total = calc();
@@ -145,7 +165,6 @@
             db[nom].deuda += total;
             localStorage.setItem('alfa_db', JSON.stringify(db));
 
-            // PDF
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
             doc.text("ALFA HC - NOTA DE ENTREGA", 15, 20);
@@ -154,18 +173,12 @@
             doc.autoTable({ startY: 30, head: [['Producto', 'Cant', 'Total']], body: rows });
             doc.save(`Nota_${nom}.pdf`);
 
-            // WhatsApp
             window.location.href = `https://wa.me/584124401702?text=${encodeURIComponent(`*ALFA HC - NUEVO PEDIDO*\nCliente: ${nom}\nTotal: $${total.toFixed(2)}`)}`;
 
-            // --- AQUÍ ESTÁ LA LIMPIEZA ---
-            cart = {}; // Vaciar carrito
-            document.getElementById('inp-nom').value = "";
-            document.getElementById('inp-rif').value = "";
-            document.getElementById('inp-dir').value = "";
-            renderProds(); // Resetear vista
+            cart = {}; document.getElementById('inp-nom').value = ""; document.getElementById('inp-rif').value = ""; document.getElementById('inp-dir').value = "";
+            renderProds();
         }
 
-        // COBRANZAS
         function renderDebts() {
             const db = JSON.parse(localStorage.getItem('alfa_db')) || {};
             let tG = 0;
@@ -174,11 +187,11 @@
                 tG += db[k].deuda;
                 return `<div class="card flex justify-between items-center">
                     <div><b>${k}</b><br><small class="text-red-500 font-bold">$${db[k].deuda.toFixed(2)}</small></div>
-                    <button onclick="abonar('${k}')" class="bg-emerald-500 text-white text-[10px] px-4 py-2 rounded-lg font-black">REGISTRAR PAGO</button>
+                    <button onclick="abonar('${k}')" class="bg-emerald-500 text-white text-[10px] px-4 py-2 rounded-lg font-black">PAGAR</button>
                 </div>`;
             }).join('');
-            document.getElementById('debt-list').innerHTML = html || '<p class="text-center text-slate-400 py-20 font-bold">Sin deudas pendientes</p>';
-            document.getElementById('total-cartera').innerText = `TOTAL POR COBRAR: $${tG.toFixed(2)}`;
+            document.getElementById('debt-list').innerHTML = html || '<p class="text-center text-slate-400 py-20 font-bold">Sin deudas</p>';
+            document.getElementById('total-cartera').innerText = `TOTAL CARTERA: $${tG.toFixed(2)}`;
         }
 
         function abonar(k) {
@@ -188,6 +201,31 @@
             db[k].deuda = Math.max(0, db[k].deuda - a);
             localStorage.setItem('alfa_db', JSON.stringify(db));
             renderDebts();
+        }
+
+        // FUNCIONES DE RESPALDO (SINCRONIZACIÓN)
+        function exportarDatos() {
+            const db = localStorage.getItem('alfa_db');
+            if(!db) return alert("No hay datos para respaldar.");
+            const blob = new Blob([db], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Respaldo_AlfaHC_${new Date().toLocaleDateString()}.json`;
+            a.click();
+        }
+
+        function importarDatos(event) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    localStorage.setItem('alfa_db', JSON.stringify(data));
+                    alert("¡Datos restaurados con éxito!");
+                    window.location.reload();
+                } catch(err) { alert("Archivo no válido"); }
+            };
+            reader.readAsText(event.target.files[0]);
         }
 
         function enviarUbicacion() {
